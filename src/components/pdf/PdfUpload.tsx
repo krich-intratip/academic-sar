@@ -39,7 +39,15 @@ export default function PdfUpload() {
         if (file) handleFile(file);
     };
 
+    const MAX_FILE_SIZE = 25 * 1024 * 1024; // 25 MB
+
     const handleFile = async (file: File) => {
+        // Check file size
+        if (file.size > MAX_FILE_SIZE) {
+            setError(`ไฟล์มีขนาดใหญ่เกินไป (${formatFileSize(file.size)}) กรุณาเลือกไฟล์ขนาดไม่เกิน 25 MB`);
+            return;
+        }
+
         setIsExtracting(true);
         setError(null);
 
@@ -70,7 +78,7 @@ export default function PdfUpload() {
             >
                 <div className="text-5xl mb-3">📁</div>
                 <p className="font-semibold text-lg">คลิกหรือลากไฟล์ PDF งานวิจัยมาวางที่นี่</p>
-                <p className="text-gray-500 text-sm mt-2">รองรับไฟล์ PDF ขนาดไม่เกิน 10MB</p>
+                <p className="text-gray-500 text-sm mt-2">รองรับไฟล์ PDF ขนาดไม่เกิน 25 MB</p>
                 <input
                     ref={fileInputRef}
                     type="file"
