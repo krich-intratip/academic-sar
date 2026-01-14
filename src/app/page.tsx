@@ -1,65 +1,168 @@
-import Image from "next/image";
+'use client';
+
+import { useState } from 'react';
+import { useApp } from '@/context/AppContext';
+import { useEvaluation } from '@/hooks';
+import { Navigation, Footer } from '@/components/layout';
+import type { TabId } from '@/components/layout';
+import { Card, Button, StatusMessage } from '@/components/ui';
+import { ProviderSelector, ApiKeyInput, ModelSelector } from '@/components/providers';
+import { PdfUpload, PdfSummary } from '@/components/pdf';
+import { StartEvaluation, EvaluationProgress } from '@/components/evaluation';
+import {
+  SummaryScore,
+  ExpertCards,
+  ScoreTable,
+  BarChart,
+  ExpertDetailTabs,
+  Recommendations,
+  Roadmap
+} from '@/components/results';
+import { UserGuide, About } from '@/components/pages';
+import { generateHtmlReport } from '@/lib/reportExport';
 
 export default function Home() {
+  const { state, getEffectiveModel, saveConfig } = useApp();
+  const { testConnection, results } = useEvaluation();
+  const [activeTab, setActiveTab] = useState<TabId>('home');
+  const [connectionStatus, setConnectionStatus] = useState<{
+    show: boolean;
+    type: 'success' | 'error' | 'info' | 'warning';
+    message: string;
+  }>({ show: false, type: 'info', message: '' });
+  const [isTesting, setIsTesting] = useState(false);
+
+  const handleTestConnection = async () => {
+    setIsTesting(true);
+    setConnectionStatus({ show: true, type: 'info', message: `⏳ กำลังทดสอบการเชื่อมต่อกับ Model: ${getEffectiveModel()}...` });
+
+    const result = await testConnection();
+    setConnectionStatus({
+      show: true,
+      type: result.success ? 'success' : 'error',
+      message: result.message
+    });
+    setIsTesting(false);
+
+    if (result.success) {
+      saveConfig();
+    }
+  };
+
+  const handleDownloadReport = () => {
+    if (!results) return;
+
+    const htmlContent = generateHtmlReport(results);
+    const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `AcademicSAR_Report_${results.projectName || 'Evaluation'}_${new Date().toISOString().split('T')[0]}.html`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  // Render content based on active tab
+  const renderContent = () => {
+    switch (activeTab) {
+      case 'guide':
+        return <UserGuide />;
+      case 'about':
+        return <About />;
+      case 'home':
+      default:
+        return (
+          <>
+            {/* Step 1: AI Configuration */}
+            <Card title="⚙️ ขั้นตอนที่ 1: ตั้งค่า AI Provider" icon="">
+              <ProviderSelector />
+
+              {state.config.provider && (
+                <>
+                  <ApiKeyInput />
+                  <ModelSelector />
+
+                  <Button
+                    onClick={handleTestConnection}
+                    isLoading={isTesting}
+                    variant="secondary"
+                  >
+                    🔗 ทดสอบการเชื่อมต่อ
+                  </Button>
+
+                  <StatusMessage
+                    type={connectionStatus.type}
+                    message={connectionStatus.message}
+                    show={connectionStatus.show}
+                  />
+                </>
+              )}
+            </Card>
+
+            {/* Step 2: Upload PDF */}
+            <Card title="📄 ขั้นตอนที่ 2: อัปโหลดเอกสารงานวิจัย" icon="">
+              <PdfUpload />
+              {state.pdfText && <PdfSummary />}
+            </Card>
+
+            {/* Step 3: Start Evaluation */}
+            <Card title="🚀 ขั้นตอนที่ 3: เริ่มการรีวิว" icon="">
+              <StartEvaluation />
+            </Card>
+
+            {/* Evaluation Progress */}
+            <EvaluationProgress />
+
+            {/* Results Section */}
+            {results && (
+              <div id="results-section">
+                <SummaryScore />
+
+                <Card title="👥 คณะผู้เชี่ยวชาญประเมิน" icon="">
+                  <ExpertCards />
+                </Card>
+
+                <Card title="📈 คะแนนเปรียบเทียบ 8 หัวข้อ" icon="">
+                  <ScoreTable />
+                  <div className="mt-8">
+                    <BarChart />
+                  </div>
+                </Card>
+
+                <Card title="🔍 ผลการประเมินโดยละเอียด" icon="">
+                  <ExpertDetailTabs />
+                </Card>
+
+                <Card title="💡 คำแนะนำสำคัญจากผู้เชี่ยวชาญ" icon="">
+                  <Recommendations />
+                </Card>
+
+                <Card title="🗺️ แผนการพัฒนางานวิจัย" icon="">
+                  <Roadmap />
+                </Card>
+
+                <div className="bg-white rounded-2xl shadow-md p-8 text-center no-print">
+                  <div className="flex gap-4 justify-center mb-6 flex-wrap">
+                    <Button onClick={handleDownloadReport} variant="success">
+                      💾 บันทึกรายงาน
+                    </Button>
+                  </div>
+                </div>
+
+                <Footer />
+              </div>
+            )}
+          </>
+        );
+    }
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <main className="max-w-6xl mx-auto p-5">
+      <Navigation activeTab={activeTab} onTabChange={setActiveTab} />
+      {renderContent()}
+    </main>
   );
 }

@@ -1,26 +1,117 @@
+/* Thai Font - must be first */
+@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap');
+
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #FAFAFA;
+  --foreground: #333333;
+
+  /* Pastel Colors */
+  --pastel-blue: #E3F2FD;
+  --pastel-green: #E8F5E9;
+  --pastel-purple: #F3E5F5;
+  --pastel-pink: #FCE4EC;
+  --pastel-orange: #FFF3E0;
+  --pastel-yellow: #FFFDE7;
+
+  /* Expert Colors */
+  --expert-1: #BBDEFB;
+  --expert-2: #C8E6C9;
+  --expert-3: #D1C4E9;
+
+  /* Score Colors */
+  --score-4: #81C784;
+  --score-3: #FFD54F;
+  --score-2: #FFB74D;
+  --score-1: #E57373;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --font-prompt: 'Prompt', sans-serif;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Pastel Colors */
+  --color-pastel-blue: var(--pastel-blue);
+  --color-pastel-green: var(--pastel-green);
+  --color-pastel-purple: var(--pastel-purple);
+  --color-pastel-pink: var(--pastel-pink);
+  --color-pastel-orange: var(--pastel-orange);
+  --color-pastel-yellow: var(--pastel-yellow);
+
+  /* Expert Colors */
+  --color-expert-1: var(--expert-1);
+  --color-expert-2: var(--expert-2);
+  --color-expert-3: var(--expert-3);
+
+  /* Score Colors */
+  --color-score-4: var(--score-4);
+  --color-score-3: var(--score-3);
+  --color-score-2: var(--score-2);
+  --color-score-1: var(--score-1);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Prompt', sans-serif;
+  line-height: 1.6;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1;
+}
+
+/* Animation Keyframes */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease;
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Print Styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .print-break {
+    page-break-before: always;
+  }
 }

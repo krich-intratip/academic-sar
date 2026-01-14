@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📚 SAR for Academic Research Paper
 
-## Getting Started
+ระบบรีวิวและประเมินคุณภาพงานวิจัยทางวิชาการโดย AI ผู้เชี่ยวชาญ 3 ท่าน
 
-First, run the development server:
+![Version](https://img.shields.io/badge/version-2.0.0-blue)
+![License](https://img.shields.io/badge/license-%402026-green)
+![Next.js](https://img.shields.io/badge/Next.js-16.1.1-black)
+![React](https://img.shields.io/badge/React-19-61DAFB)
+
+## 🎯 วัตถุประสงค์
+
+ระบบ **SAR (Self-Assessment Report) for Academic Research Paper** พัฒนาขึ้นเพื่อ:
+- ทดสอบระบบ SAR ที่ใช้ปัญญาประดิษฐ์ (AI) เป็นผู้เชี่ยวชาญช่วยในการประเมินคุณภาพงานวิจัย
+- นำไปใช้ในการศึกษาระดับอุดมศึกษาเป็นหลัก
+
+## ✨ Features
+
+- **👨‍🔬 ผู้เชี่ยวชาญ AI 3 ท่าน** - ประเมินโดยผู้เชี่ยวชาญด้านระเบียบวิธีวิจัย, เนื้อหาและทฤษฎี, และการเขียนวิชาการ
+- **📊 เกณฑ์การประเมิน 8 หัวข้อ** - ครอบคลุมตั้งแต่ชื่อเรื่อง บทคัดย่อ จนถึงการอ้างอิงและรูปแบบการเขียน
+- **💡 คำแนะนำและ Roadmap** - ให้คำแนะนำที่เป็นรูปธรรมและแผนการพัฒนางานวิจัย
+- **🤖 รองรับหลาย AI Provider** - Google Gemini (ฟรี), OpenAI, และ OpenRouter
+- **💾 บันทึกรายงาน** - Export รายงานเป็น HTML พร้อม styling สมบูรณ์
+
+## 🛠️ Tech Stack
+
+- **Framework:** Next.js 16.1.1
+- **UI:** React 19.2.3
+- **Styling:** Tailwind CSS 4
+- **Language:** TypeScript 5
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18+ 
+- npm หรือ yarn
+
+### Installation
 
 ```bash
+# Clone repository
+git clone https://github.com/krich-intratip/academic-sar.git
+cd academic-sar
+
+# Install dependencies
+npm install
+
+# Run development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+เปิด [http://localhost:3000](http://localhost:3000) ในเบราว์เซอร์
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📖 วิธีใช้งาน
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **ตั้งค่า AI Provider** - เลือก Provider และกรอก API Key
+2. **อัปโหลดเอกสาร** - อัปโหลดไฟล์ PDF งานวิจัย
+3. **เริ่มการรีวิว** - รอ AI ผู้เชี่ยวชาญประเมิน
+4. **ดูผลและบันทึก** - ดูผลการประเมินและบันทึกรายงาน
 
-## Learn More
+## 📋 เกณฑ์การประเมิน
 
-To learn more about Next.js, take a look at the following resources:
+| หัวข้อ | น้ำหนัก |
+|--------|---------|
+| ชื่อเรื่องและบทคัดย่อ | ×2 |
+| บทนำและการทบทวนวรรณกรรม | ×3 |
+| คำถามวิจัยและวัตถุประสงค์ | ×3 |
+| ระเบียบวิธีวิจัย | ×4 |
+| ผลการวิจัยและการวิเคราะห์ข้อมูล | ×4 |
+| การอภิปรายผล | ×3 |
+| สรุปและข้อเสนอแนะ | ×2 |
+| การอ้างอิงและรูปแบบการเขียน | ×2 |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🌐 Deployment
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Deploy on Vercel
 
-## Deploy on Vercel
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/krich-intratip/academic-sar)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 👨‍💻 ผู้พัฒนา
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**[พล.ท.ดร.กริช อินทราทิพย์](https://www.canva.com/design/DAG7mNgWuVo/zeHJV8U2i8Qcd_InCC21xQ/view?utm_content=DAG7mNgWuVo&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h9a5468a0d1)**
+
+## 📄 License
+
+@2026 - พล.ท.ดร.กริช อินทราทิพย์
+
+---
+
+⚠️ **หมายเหตุ:** ระบบนี้เป็นเครื่องมือช่วยประเมินเบื้องต้นโดย AI ผลการประเมินควรใช้ประกอบการพิจารณาร่วมกับการรีวิวจากผู้เชี่ยวชาญมนุษย์
