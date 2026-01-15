@@ -1,11 +1,14 @@
 'use client';
 
+import { useState } from 'react';
 import { APP_VERSION, APP_LAST_UPDATE, APP_NAME } from '@/types/app';
-import { Card } from '@/components/ui';
+import { Card, QRCodeModal } from '@/components/ui';
 
 const DEVELOPER_LINK = 'https://www.canva.com/design/DAG7mNgWuVo/zeHJV8U2i8Qcd_InCC21xQ/view?utm_content=DAG7mNgWuVo&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h9a5468a0d1';
 
 export default function About() {
+    const [isQRModalOpen, setIsQRModalOpen] = useState(false);
+
     return (
         <div className="space-y-6">
             <div className="bg-gradient-to-r from-[#F3E5F5] to-[#E3F2FD] p-8 rounded-2xl text-center">
@@ -106,6 +109,36 @@ export default function About() {
                 </div>
             </Card>
 
+            {/* Donation Support */}
+            <Card title="สนับสนุนผู้พัฒนา" icon="☕">
+                <div className="text-center py-4">
+                    <p className="text-gray-700 mb-6 leading-relaxed">
+                        สนับสนุนช่วยค่าเช่า Server ของ Web app นี้<br />
+                        เพื่อให้สามารถบริการได้ต่อไป
+                    </p>
+                    <div className="flex justify-center">
+                        <button
+                            onClick={() => setIsQRModalOpen(true)}
+                            className="relative w-48 h-48 rounded-xl overflow-hidden shadow-lg border-4 border-white bg-white p-2 cursor-pointer hover:scale-105 hover:shadow-xl transition-all duration-200 group"
+                            title="คลิกเพื่อดูรูปขนาดใหญ่"
+                        >
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                                src="/donation-qr.jpg"
+                                alt="QR Code สำหรับบริจาค"
+                                className="w-full h-full object-contain rounded-lg"
+                            />
+                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors rounded-xl flex items-center justify-center">
+                                <span className="opacity-0 group-hover:opacity-100 transition-opacity text-white text-xs font-medium bg-black/50 px-2 py-1 rounded">🔍 ดูใหญ่</span>
+                            </div>
+                        </button>
+                    </div>
+                    <p className="text-sm text-gray-500 mt-4">
+                        คลิกที่ QR Code เพื่อดูขนาดใหญ่และบันทึกภาพ
+                    </p>
+                </div>
+            </Card>
+
             {/* Version & License */}
             <div className="bg-white p-6 rounded-2xl shadow-md text-center">
                 <div className="flex flex-wrap justify-center gap-8 mb-4">
@@ -140,6 +173,15 @@ export default function About() {
                     ผลการประเมินควรใช้ประกอบการพิจารณาร่วมกับการรีวิวจากผู้เชี่ยวชาญมนุษย์
                 </p>
             </div>
+
+            {/* QR Code Modal */}
+            <QRCodeModal
+                isOpen={isQRModalOpen}
+                onClose={() => setIsQRModalOpen(false)}
+                imageSrc="/donation-qr.jpg"
+                imageAlt="QR Code สำหรับบริจาค"
+                downloadFileName="donation-qr-academic-sar.jpg"
+            />
         </div>
     );
 }
