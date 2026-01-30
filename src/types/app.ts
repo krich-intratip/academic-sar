@@ -8,6 +8,7 @@ export interface AppConfig {
     apiKey: string | null;
     model: string | null;
     customModel: string | null;
+    rubricType: RubricType | null;
 }
 
 export interface AppState {
@@ -25,6 +26,7 @@ export type AppAction =
     | { type: 'SET_API_KEY'; payload: string | null }
     | { type: 'SET_MODEL'; payload: string | null }
     | { type: 'SET_CUSTOM_MODEL'; payload: string | null }
+    | { type: 'SET_RUBRIC_TYPE'; payload: RubricType | null }
     | { type: 'SET_PDF_TEXT'; payload: { text: string; fileName: string; fileSize: number } }
     | { type: 'CLEAR_PDF' }
     | { type: 'SET_EVALUATING'; payload: boolean }
@@ -33,8 +35,22 @@ export type AppAction =
     | { type: 'LOAD_CONFIG'; payload: AppConfig }
     | { type: 'RESET' };
 
-export const APP_VERSION = 'v2.1.0';
-export const APP_LAST_UPDATE = '15 มกราคม 2569';
-export const APP_TITLE = 'SAR for Academic Research';
-export const APP_NAME = 'SAR for Academic Research Paper';
+export const APP_VERSION = 'v3.0.1';
+export const APP_LAST_UPDATE = '30 มกราคม 2568';
+export const APP_TITLE = 'ระบบประเมินโครงร่างและวิทยานิพนธ์';
+export const APP_NAME = 'ระบบประเมินโครงร่างและวิทยานิพนธ์';
+
+// Rubric Types
+export type RubricType = 'proposal' | 'thesis';
+
+export interface RubricInfo {
+    id: RubricType;
+    name: string;
+    shortName: string;
+    description: string;
+    chapters: string;
+    icon: string;
+    color: string;
+    borderColor: string;
+}
 

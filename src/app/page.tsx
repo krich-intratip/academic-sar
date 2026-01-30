@@ -9,6 +9,7 @@ import { Card, Button, StatusMessage, QRCodeModal } from '@/components/ui';
 import { ProviderSelector, ApiKeyInput, ModelSelector } from '@/components/providers';
 import { PdfUpload, PdfSummary } from '@/components/pdf';
 import { StartEvaluation, EvaluationProgress } from '@/components/evaluation';
+import { RubricSelector, RubricBadge } from '@/components/rubric';
 import {
   SummaryScore,
   ExpertCards,
@@ -132,14 +133,45 @@ export default function Home() {
               )}
             </Card>
 
-            {/* Step 2: Upload PDF */}
-            <Card title="📄 ขั้นตอนที่ 2: อัปโหลดเอกสารงานวิจัย" icon="">
-              <PdfUpload />
-              {state.pdfText && <PdfSummary />}
+            {/* Step 2: Select Rubric Type */}
+            <Card title="📋 ขั้นตอนที่ 2: เลือกประเภทการประเมิน" icon="">
+              <RubricSelector />
             </Card>
 
-            {/* Step 3: Start Evaluation */}
-            <Card title="🚀 ขั้นตอนที่ 3: เริ่มการรีวิว" icon="">
+            {/* Step 3: Upload PDF */}
+            <Card
+              title={
+                <span className="flex items-center gap-3">
+                  📄 ขั้นตอนที่ 3: อัปโหลดเอกสาร
+                  {state.config.rubricType && <RubricBadge size="sm" />}
+                </span>
+              }
+              icon=""
+            >
+              {!state.config.rubricType ? (
+                <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                  <p className="text-yellow-700 text-sm">
+                    กรุณาเลือกประเภทการประเมินในขั้นตอนที่ 2 ก่อนอัปโหลดเอกสาร
+                  </p>
+                </div>
+              ) : (
+                <>
+                  <PdfUpload />
+                  {state.pdfText && <PdfSummary />}
+                </>
+              )}
+            </Card>
+
+            {/* Step 4: Start Evaluation */}
+            <Card
+              title={
+                <span className="flex items-center gap-3">
+                  🚀 ขั้นตอนที่ 4: เริ่มการประเมิน
+                  {state.config.rubricType && <RubricBadge size="sm" />}
+                </span>
+              }
+              icon=""
+            >
               <StartEvaluation />
             </Card>
 

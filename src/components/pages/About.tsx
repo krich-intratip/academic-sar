@@ -16,7 +16,7 @@ export default function About() {
                     ℹ️ เกี่ยวกับโปรแกรม
                 </h2>
                 <p className="text-gray-600">
-                    ข้อมูลเกี่ยวกับระบบ {APP_NAME}
+                    ข้อมูลเกี่ยวกับ{APP_NAME}
                 </p>
             </div>
 
@@ -24,9 +24,9 @@ export default function About() {
             <Card title="วัตถุประสงค์ของโปรแกรม" icon="🎯">
                 <div className="space-y-4">
                     <p className="text-gray-700 leading-relaxed">
-                        ระบบ <strong>SAR for Academic Research Paper</strong> (Self-Assessment Report)
-                        เป็นเครื่องมือที่พัฒนาขึ้นเพื่อทดสอบระบบ SAR ที่ใช้ปัญญาประดิษฐ์ (AI)
-                        เป็นผู้เชี่ยวชาญช่วยในการประเมินคุณภาพงานวิจัยทางวิชาการ
+                        <strong>{APP_NAME}</strong> เป็นเครื่องมือที่พัฒนาขึ้นเพื่อช่วยในการประเมินคุณภาพ
+                        โครงร่างวิทยานิพนธ์และวิทยานิพนธ์ฉบับเต็มระดับปริญญาโท โดยใช้ปัญญาประดิษฐ์ (AI)
+                        เป็นผู้เชี่ยวชาญทางวิชาการในการให้คำแนะนำ
                     </p>
                     <div className="p-4 bg-blue-50 rounded-lg border-l-4 border-blue-400">
                         <h4 className="font-semibold text-blue-800 mb-2">🎓 กลุ่มเป้าหมาย</h4>
@@ -41,6 +41,13 @@ export default function About() {
             {/* Features */}
             <Card title="คุณสมบัติของระบบ" icon="✨">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="p-4 bg-gradient-to-r from-[#E3F2FD] to-white rounded-lg">
+                        <div className="text-2xl mb-2">📋</div>
+                        <h4 className="font-semibold mb-1">รองรับ 2 ประเภทการประเมิน</h4>
+                        <p className="text-sm text-gray-600">
+                            โครงร่างวิทยานิพนธ์ (บทที่ 1-3) และวิทยานิพนธ์ฉบับเต็ม (5 บท)
+                        </p>
+                    </div>
                     <div className="p-4 bg-gradient-to-r from-[#BBDEFB] to-white rounded-lg">
                         <div className="text-2xl mb-2">👨‍🔬</div>
                         <h4 className="font-semibold mb-1">ผู้เชี่ยวชาญ AI 3 ท่าน</h4>
@@ -50,9 +57,9 @@ export default function About() {
                     </div>
                     <div className="p-4 bg-gradient-to-r from-[#C8E6C9] to-white rounded-lg">
                         <div className="text-2xl mb-2">📊</div>
-                        <h4 className="font-semibold mb-1">เกณฑ์การประเมิน 8 หัวข้อ</h4>
+                        <h4 className="font-semibold mb-1">เกณฑ์มาตรฐาน</h4>
                         <p className="text-sm text-gray-600">
-                            ครอบคลุมตั้งแต่ชื่อเรื่อง บทคัดย่อ จนถึงการอ้างอิงและรูปแบบการเขียน
+                            ใช้เกณฑ์การประเมินมาตรฐานระดับบัณฑิตศึกษา (Descriptive Rubric)
                         </p>
                     </div>
                     <div className="p-4 bg-gradient-to-r from-[#D1C4E9] to-white rounded-lg">
@@ -68,6 +75,49 @@ export default function About() {
                         <p className="text-sm text-gray-600">
                             Google Gemini (ฟรี), OpenAI, และ OpenRouter
                         </p>
+                    </div>
+                    <div className="p-4 bg-gradient-to-r from-[#F3E5F5] to-white rounded-lg">
+                        <div className="text-2xl mb-2">📄</div>
+                        <h4 className="font-semibold mb-1">บันทึกรายงาน</h4>
+                        <p className="text-sm text-gray-600">
+                            ส่งออกผลการประเมินเป็นไฟล์ HTML พร้อมใช้งาน
+                        </p>
+                    </div>
+                </div>
+            </Card>
+
+            {/* Rubric Types */}
+            <Card title="ประเภทการประเมินที่รองรับ" icon="📝">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="p-4 bg-gradient-to-br from-[#E3F2FD] to-white rounded-lg border-2 border-[#1976D2]">
+                        <div className="flex items-center gap-2 mb-3">
+                            <span className="text-3xl">📝</span>
+                            <div>
+                                <h4 className="font-bold text-[#1976D2]">โครงร่างวิทยานิพนธ์</h4>
+                                <span className="text-xs bg-[#1976D2] text-white px-2 py-0.5 rounded-full">Proposal</span>
+                            </div>
+                        </div>
+                        <ul className="text-sm text-gray-600 space-y-1">
+                            <li>✓ บทที่ 1: บทนำ (25 คะแนน)</li>
+                            <li>✓ บทที่ 2: เอกสารและงานวิจัย (25 คะแนน)</li>
+                            <li>✓ บทที่ 3: ระเบียบวิธีวิจัย (40 คะแนน)</li>
+                            <li>✓ มาตรฐานวิชาการ (10 คะแนน)</li>
+                        </ul>
+                    </div>
+                    <div className="p-4 bg-gradient-to-br from-[#F3E5F5] to-white rounded-lg border-2 border-[#7B1FA2]">
+                        <div className="flex items-center gap-2 mb-3">
+                            <span className="text-3xl">📚</span>
+                            <div>
+                                <h4 className="font-bold text-[#7B1FA2]">วิทยานิพนธ์ฉบับเต็ม</h4>
+                                <span className="text-xs bg-[#7B1FA2] text-white px-2 py-0.5 rounded-full">Full Thesis</span>
+                            </div>
+                        </div>
+                        <ul className="text-sm text-gray-600 space-y-1">
+                            <li>✓ บทที่ 1-3: เช่นเดียวกับ Proposal</li>
+                            <li>✓ บทที่ 4: ผลการวิจัย (20 คะแนน)</li>
+                            <li>✓ บทที่ 5: อภิปรายและสรุป (20 คะแนน)</li>
+                            <li>✓ มาตรฐานและจริยธรรม (10 คะแนน)</li>
+                        </ul>
                     </div>
                 </div>
             </Card>
@@ -153,7 +203,7 @@ export default function About() {
                 </div>
                 <div className="pt-4 border-t border-gray-200">
                     <p className="text-gray-600">
-                        License @2026 -
+                        License @2025 -
                         <a
                             href={DEVELOPER_LINK}
                             target="_blank"

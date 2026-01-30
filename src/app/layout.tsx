@@ -3,9 +3,9 @@ import { AppProvider } from "@/context/AppContext";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "SAR for Academic Research",
-  description: "ระบบรีวิวงานวิจัยโดยผู้เชี่ยวชาญทางวิชาการ AI - Academic SAR Review System",
-  keywords: ["academic research", "SAR", "research review", "AI evaluation", "งานวิจัย", "ประเมินงานวิจัย"],
+  title: "ระบบประเมินโครงร่างและวิทยานิพนธ์",
+  description: "ระบบประเมินโครงร่างและวิทยานิพนธ์โดยผู้เชี่ยวชาญทางวิชาการ AI - Thesis Proposal & Full Thesis Evaluation System",
+  keywords: ["thesis", "proposal", "วิทยานิพนธ์", "โครงร่างวิทยานิพนธ์", "ประเมินวิทยานิพนธ์", "AI evaluation", "academic research"],
   authors: [{ name: "พล.ท.ดร.กริช อินทราทิพย์" }],
   icons: {
     icon: "/favicon.svg",

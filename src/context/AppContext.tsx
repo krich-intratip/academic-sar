@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
-import { AppState, AppAction, AppConfig, AIProvider } from '@/types';
+import { AppState, AppAction, AppConfig, AIProvider, RubricType } from '@/types';
 
 const STORAGE_KEY = 'academic_sar_config';
 
@@ -10,7 +10,8 @@ const initialState: AppState = {
         provider: null,
         apiKey: null,
         model: null,
-        customModel: null
+        customModel: null,
+        rubricType: null
     },
     pdfText: null,
     pdfFileName: null,
@@ -46,6 +47,11 @@ function appReducer(state: AppState, action: AppAction): AppState {
             return {
                 ...state,
                 config: { ...state.config, customModel: action.payload }
+            };
+        case 'SET_RUBRIC_TYPE':
+            return {
+                ...state,
+                config: { ...state.config, rubricType: action.payload }
             };
         case 'SET_PDF_TEXT':
             return {
@@ -105,7 +111,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
                         provider,
                         apiKey,
                         model,
-                        customModel
+                        customModel,
+                        rubricType: null
                     }
                 });
             }
