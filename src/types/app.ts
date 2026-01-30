@@ -37,6 +37,7 @@ export type AppAction =
 
 export const APP_VERSION = 'v3.0.1';
 export const APP_LAST_UPDATE = '30 มกราคม 2568';
+export const APP_BUILD_NUMBER = '20250130.2';
 export const APP_TITLE = 'ระบบประเมินโครงร่างและวิทยานิพนธ์';
 export const APP_NAME = 'ระบบประเมินโครงร่างและวิทยานิพนธ์';
 
