@@ -3,18 +3,23 @@
 import { useApp } from '@/context/AppContext';
 import { generateOverallSummary } from '@/lib/evaluation';
 import { getQualityColor } from '@/lib/utils';
+import { RubricBadge } from '@/components/rubric';
 
 export default function SummaryScore() {
     const { state } = useApp();
     const results = state.evaluationResults;
 
-    if (!results?.summary) return null;
+    if (!results?.summary || !results.rubricType) return null;
 
-    const { summary, projectName, organizationName, evaluationDate } = results;
+    const { summary, projectName, organizationName, evaluationDate, rubricType } = results;
 
     return (
         <div className="bg-gradient-to-r from-[#E8F5E9] to-[#E3F2FD] p-8 md:p-10 rounded-2xl text-center mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold mb-6">📊 สรุปผลการประเมิน</h2>
+            <h2 className="text-2xl md:text-3xl font-bold mb-4">📊 สรุปผลการประเมิน</h2>
+
+            <div className="mb-6">
+                <RubricBadge rubricType={rubricType} size="lg" />
+            </div>
 
             <div className="mb-4">
                 <p className="text-lg"><strong>งานวิจัย:</strong> {projectName}</p>
@@ -43,7 +48,7 @@ export default function SummaryScore() {
             </span>
 
             <p className="mt-6 max-w-3xl mx-auto text-gray-600">
-                {generateOverallSummary(summary, results.experts)}
+                {generateOverallSummary(summary, results.experts, rubricType)}
             </p>
         </div>
     );

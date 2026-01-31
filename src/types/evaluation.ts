@@ -1,5 +1,7 @@
 // Evaluation Types
 
+import { RubricType } from './app';
+
 export interface Expert {
     id: 'expert1' | 'expert2' | 'expert3';
     name: string;
@@ -48,23 +50,76 @@ export const experts: Record<string, Expert> = {
     }
 };
 
-export interface EvaluationCriteria {
+// Rubric Criteria Interface
+export interface RubricCriteria {
     id: number;
     name: string;
     weight: number;
     maxScore: number;
+    chapter?: string;
+    description?: string;
 }
 
-export const evaluationCriteria: EvaluationCriteria[] = [
-    { id: 1, name: 'ชื่อเรื่องและบทคัดย่อ', weight: 2, maxScore: 9 },
-    { id: 2, name: 'บทนำและการทบทวนวรรณกรรม', weight: 3, maxScore: 13 },
-    { id: 3, name: 'คำถามวิจัยและวัตถุประสงค์', weight: 3, maxScore: 13 },
-    { id: 4, name: 'ระเบียบวิธีวิจัย', weight: 4, maxScore: 17 },
-    { id: 5, name: 'ผลการวิจัยและการวิเคราะห์ข้อมูล', weight: 4, maxScore: 17 },
-    { id: 6, name: 'การอภิปรายผล', weight: 3, maxScore: 13 },
-    { id: 7, name: 'สรุปและข้อเสนอแนะ', weight: 2, maxScore: 9 },
-    { id: 8, name: 'การอ้างอิงและรูปแบบการเขียน', weight: 2, maxScore: 9 }
+// Proposal Rubric Criteria (บทที่ 1-3) - 100 คะแนน
+export const proposalCriteria: RubricCriteria[] = [
+    // บทที่ 1: บทนำ (25 คะแนน)
+    { id: 1, name: 'ที่มาและความสำคัญของปัญหา', weight: 10, maxScore: 10, chapter: 'บทที่ 1', description: 'หลักฐานความจำเป็น, Research Gap & Value, ความสมเหตุสมผล' },
+    { id: 2, name: 'คำถามการวิจัยและวัตถุประสงค์', weight: 5, maxScore: 5, chapter: 'บทที่ 1', description: 'ความสอดคล้อง, ความเป็นไปได้ (Feasible)' },
+    { id: 3, name: 'กรอบแนวคิดการวิจัย', weight: 5, maxScore: 5, chapter: 'บทที่ 1', description: 'ตัวแปรต้น-ตัวแปรตาม, แผนภาพชัดเจน' },
+    { id: 4, name: 'ขอบเขตและนิยามศัพท์', weight: 5, maxScore: 5, chapter: 'บทที่ 1', description: 'ขอบเขตเหมาะสม, นิยามเชิงปฏิบัติการ' },
+    // บทที่ 2: เอกสารและงานวิจัยที่เกี่ยวข้อง (25 คะแนน)
+    { id: 5, name: 'ความครอบคลุมและทันสมัย', weight: 10, maxScore: 10, chapter: 'บทที่ 2', description: 'ความเกี่ยวข้อง, อ้างอิง 5-10 ปีย้อนหลัง' },
+    { id: 6, name: 'การสังเคราะห์และการวิเคราะห์', weight: 10, maxScore: 10, chapter: 'บทที่ 2', description: 'Critical Review, จัดกลุ่มแนวคิด, สร้างกรอบแนวคิด' },
+    { id: 7, name: 'คุณภาพแหล่งข้อมูล', weight: 5, maxScore: 5, chapter: 'บทที่ 2', description: 'Primary Sources, Peer-reviewed Journals' },
+    // บทที่ 3: ระเบียบวิธีวิจัย (40 คะแนน)
+    { id: 8, name: 'แบบแผนการวิจัย (Research Design)', weight: 10, maxScore: 10, chapter: 'บทที่ 3', description: 'วิธีวิจัยเหมาะสม, อธิบายเหตุผลได้' },
+    { id: 9, name: 'ประชากรและกลุ่มตัวอย่าง', weight: 10, maxScore: 10, chapter: 'บทที่ 3', description: 'Unit of Analysis, Sampling ถูกต้อง' },
+    { id: 10, name: 'เครื่องมือวิจัยและการตรวจสอบคุณภาพ', weight: 10, maxScore: 10, chapter: 'บทที่ 3', description: 'ร่างเครื่องมือ, IOC, Pilot Test' },
+    { id: 11, name: 'การเก็บรวบรวมและการวิเคราะห์ข้อมูล', weight: 5, maxScore: 5, chapter: 'บทที่ 3', description: 'ขั้นตอนเป็นระบบ, สถิติเหมาะสม' },
+    { id: 12, name: 'แผนการดำเนินงาน (Timeline)', weight: 5, maxScore: 5, chapter: 'บทที่ 3', description: 'เป็นไปได้จริง, สอดคล้องกรอบเวลา' },
+    // มาตรฐานวิชาการและการนำเสนอ (10 คะแนน)
+    { id: 13, name: 'การเขียนและการอ้างอิง', weight: 5, maxScore: 5, chapter: 'มาตรฐานวิชาการ', description: 'ภาษาวิชาการ, อ้างอิงถูกต้อง' },
+    { id: 14, name: 'ความพร้อมและการนำเสนอ', weight: 5, maxScore: 5, chapter: 'มาตรฐานวิชาการ', description: 'เอกสารสมบูรณ์, ตอบข้อซักถามได้' }
 ];
+
+// Thesis Rubric Criteria (5 บท) - 100 คะแนน
+export const thesisCriteria: RubricCriteria[] = [
+    // บทที่ 1: บทนำและกรอบปัญหา (15 คะแนน)
+    { id: 1, name: 'ที่มาและความสำคัญของปัญหา', weight: 3, maxScore: 3, chapter: 'บทที่ 1', description: 'หลักฐานเชิงประจักษ์, Research Gap, สามเหลี่ยมหัวกลับ' },
+    { id: 2, name: 'คำถามการวิจัยและวัตถุประสงค์', weight: 4, maxScore: 4, chapter: 'บทที่ 1', description: 'ชัดเจน, วัดผลได้, สอดคล้อง' },
+    { id: 3, name: 'ขอบเขตและนิยามศัพท์', weight: 3, maxScore: 3, chapter: 'บทที่ 1', description: 'ขอบเขตชัดเจน, นิยามเชิงปฏิบัติการ' },
+    { id: 4, name: 'กรอบแนวคิดการวิจัย', weight: 3, maxScore: 3, chapter: 'บทที่ 1', description: 'ความสัมพันธ์ตัวแปร, ตรรกะชัดเจน' },
+    { id: 5, name: 'ประโยชน์ที่คาดว่าจะได้รับ', weight: 2, maxScore: 2, chapter: 'บทที่ 1', description: 'ประโยชน์เชิงวิชาการ, เชิงนโยบาย, เชิงปฏิบัติ' },
+    // บทที่ 2: เอกสารและงานวิจัยที่เกี่ยวข้อง (15 คะแนน)
+    { id: 6, name: 'ความครอบคลุมและความทันสมัย', weight: 4, maxScore: 4, chapter: 'บทที่ 2', description: 'ครอบคลุมตัวแปร, แหล่งข้อมูลปัจจุบัน' },
+    { id: 7, name: 'การสังเคราะห์เนื้อหา', weight: 5, maxScore: 5, chapter: 'บทที่ 2', description: 'Thematic grouping, เปรียบเทียบ, วิพากษ์' },
+    { id: 8, name: 'การระบุช่องว่างทางความรู้', weight: 3, maxScore: 3, chapter: 'บทที่ 2', description: 'ชี้ประเด็นที่ยังไม่ครอบคลุม, ความขัดแย้ง' },
+    { id: 9, name: 'คุณภาพของแหล่งอ้างอิง', weight: 3, maxScore: 3, chapter: 'บทที่ 2', description: 'Primary Sources, Peer-reviewed' },
+    // บทที่ 3: ระเบียบวิธีวิจัย (20 คะแนน)
+    { id: 10, name: 'แบบแผนการวิจัย', weight: 4, maxScore: 4, chapter: 'บทที่ 3', description: 'เหตุผลการเลือกวิธี, ตอบคำถามวิจัยได้' },
+    { id: 11, name: 'ประชากรและกลุ่มตัวอย่าง', weight: 4, maxScore: 4, chapter: 'บทที่ 3', description: 'Sample Size, Sampling Method ถูกต้อง' },
+    { id: 12, name: 'เครื่องมือวิจัย', weight: 4, maxScore: 4, chapter: 'บทที่ 3', description: 'Validity & Reliability, ตัวอย่างข้อคำถาม' },
+    { id: 13, name: 'การเก็บรวบรวมข้อมูล', weight: 4, maxScore: 4, chapter: 'บทที่ 3', description: 'ขั้นตอนรัดกุม, ควบคุม Bias, จริยธรรม' },
+    { id: 14, name: 'การวิเคราะห์ข้อมูล', weight: 4, maxScore: 4, chapter: 'บทที่ 3', description: 'สถิติเหมาะสม, Coding, Thematic Analysis' },
+    // บทที่ 4: ผลการวิจัย (20 คะแนน)
+    { id: 15, name: 'การนำเสนอที่เป็นระบบ', weight: 5, maxScore: 5, chapter: 'บทที่ 4', description: 'เรียงตามวัตถุประสงค์, ตาราง/แผนภูมิชัดเจน' },
+    { id: 16, name: 'ความถูกต้องของข้อมูล', weight: 5, maxScore: 5, chapter: 'บทที่ 4', description: 'ตัวเลขถูกต้อง, หน่วยวัดชัดเจน' },
+    { id: 17, name: 'การตีความ', weight: 5, maxScore: 5, chapter: 'บทที่ 4', description: 'สรุปใจความสำคัญ, Verbatim quotes' },
+    { id: 18, name: 'ความโปร่งใส', weight: 5, maxScore: 5, chapter: 'บทที่ 4', description: 'รายงานตามจริง, ระบุข้อจำกัด' },
+    // บทที่ 5: อภิปรายผลและข้อเสนอแนะ (20 คะแนน)
+    { id: 19, name: 'การสรุปผล', weight: 5, maxScore: 5, chapter: 'บทที่ 5', description: 'กระชับ, ตรงประเด็น, ตอบคำถามครบ' },
+    { id: 20, name: 'การอภิปรายผล', weight: 10, maxScore: 10, chapter: 'บทที่ 5', description: 'อธิบาย "ทำไม", เชื่อมโยงทฤษฎี, เปรียบเทียบงานวิจัย' },
+    { id: 21, name: 'ข้อเสนอแนะ', weight: 5, maxScore: 5, chapter: 'บทที่ 5', description: 'Evidence-based, ข้อเสนอแนะวิจัยต่อไป' },
+    // มาตรฐานวิชาการและจริยธรรม (10 คะแนน)
+    { id: 22, name: 'การเขียนเชิงวิชาการ', weight: 4, maxScore: 4, chapter: 'มาตรฐานวิชาการ', description: 'ภาษาทางการ, Coherence' },
+    { id: 23, name: 'การอ้างอิง', weight: 3, maxScore: 3, chapter: 'มาตรฐานวิชาการ', description: 'APA/IEEE ถูกต้อง, สอดคล้องทุกรายการ' },
+    { id: 24, name: 'จริยธรรม', weight: 3, maxScore: 3, chapter: 'มาตรฐานวิชาการ', description: 'ไม่ Plagiarism, IRB, Informed Consent' }
+];
+
+// Get criteria by rubric type
+export const getCriteriaByRubric = (rubricType: RubricType): RubricCriteria[] => {
+    return rubricType === 'proposal' ? proposalCriteria : thesisCriteria;
+};
 
 export interface ScoreItem {
     criteriaId: number;
@@ -95,6 +150,7 @@ export interface ExpertEvaluation {
 export interface CriteriaAverage {
     criteriaId: number;
     name: string;
+    chapter?: string;
     averageScore: number;
     weightedScore: number;
     maxWeightedScore: number;
@@ -113,6 +169,7 @@ export interface EvaluationResults {
     projectName: string;
     organizationName: string;
     evaluationDate: string;
+    rubricType: RubricType;
     experts: {
         expert1?: ExpertEvaluation;
         expert2?: ExpertEvaluation;

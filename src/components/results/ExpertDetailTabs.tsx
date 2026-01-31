@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useApp } from '@/context/AppContext';
-import { experts, evaluationCriteria, ExpertEvaluation } from '@/types/evaluation';
+import { experts, getCriteriaByRubric, ExpertEvaluation } from '@/types/evaluation';
 import { getScoreBgClass, getPriorityColor, getPriorityLabel } from '@/lib/utils';
 
 export default function ExpertDetailTabs() {
@@ -10,7 +10,9 @@ export default function ExpertDetailTabs() {
     const [activeTab, setActiveTab] = useState(1);
     const results = state.evaluationResults;
 
-    if (!results?.experts) return null;
+    if (!results?.experts || !results.rubricType) return null;
+
+    const evaluationCriteria = getCriteriaByRubric(results.rubricType);
 
     const tabs = [
         { id: 1, expertId: 'expert1', data: results.experts.expert1 },

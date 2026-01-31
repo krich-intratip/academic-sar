@@ -2,15 +2,17 @@
 
 import { useApp } from '@/context/AppContext';
 import { getRubricInfo } from '@/lib/rubrics';
+import { RubricType } from '@/types/app';
 
 interface RubricBadgeProps {
     size?: 'sm' | 'md' | 'lg';
     showIcon?: boolean;
+    rubricType?: RubricType; // Optional: use this if passed, otherwise use from state
 }
 
-export default function RubricBadge({ size = 'md', showIcon = true }: RubricBadgeProps) {
+export default function RubricBadge({ size = 'md', showIcon = true, rubricType: propRubricType }: RubricBadgeProps) {
     const { state } = useApp();
-    const rubricType = state.config.rubricType;
+    const rubricType = propRubricType || state.config.rubricType;
 
     if (!rubricType) return null;
 

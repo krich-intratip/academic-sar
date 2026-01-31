@@ -8,13 +8,15 @@ export default function ExpertCards() {
     const { state } = useApp();
     const results = state.evaluationResults;
 
-    if (!results?.experts) return null;
+    if (!results?.experts || !results.rubricType) return null;
+
+    const rubricType = results.rubricType;
 
     const renderExpertCard = (expertId: string, expertData?: ExpertEvaluation) => {
         const expert = experts[expertId];
         if (!expert || !expertData) return null;
 
-        const totalScore = getExpertTotalScore(expertData);
+        const totalScore = getExpertTotalScore(expertData, rubricType);
 
         return (
             <div

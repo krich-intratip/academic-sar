@@ -35,9 +35,9 @@ export type AppAction =
     | { type: 'LOAD_CONFIG'; payload: AppConfig }
     | { type: 'RESET' };
 
-export const APP_VERSION = 'v3.0.1';
-export const APP_LAST_UPDATE = '30 มกราคม 2568';
-export const APP_BUILD_NUMBER = '20250130.2';
+export const APP_VERSION = 'v3.1.0';
+export const APP_LAST_UPDATE = '31 มกราคม 2568';
+export const APP_BUILD_NUMBER = '20250131.1';
 export const APP_TITLE = 'ระบบประเมินโครงร่างและวิทยานิพนธ์';
 export const APP_NAME = 'ระบบประเมินโครงร่างและวิทยานิพนธ์';
 

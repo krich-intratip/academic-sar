@@ -21,10 +21,11 @@ import {
 } from '@/components/results';
 import { UserGuide, About } from '@/components/pages';
 import { generateHtmlReport } from '@/lib/reportExport';
+import { getCriteriaByRubric } from '@/types/evaluation';
 
 export default function Home() {
   const { state, getEffectiveModel, saveConfig } = useApp();
-  const { testConnection, results } = useEvaluation();
+  const { testConnection, results, resetEvaluation } = useEvaluation();
   const [activeTab, setActiveTab] = useState<TabId>('home');
   const [connectionStatus, setConnectionStatus] = useState<{
     show: boolean;
@@ -36,7 +37,7 @@ export default function Home() {
 
   const handleTestConnection = async () => {
     setIsTesting(true);
-    setConnectionStatus({ show: true, type: 'info', message: `⏳ กำลังทดสอบการเชื่อมต่อกับ Model: ${getEffectiveModel()}...` });
+    setConnectionStatus({ show: true, type: 'info', message: `กำลังทดสอบการเชื่อมต่อกับ Model: ${getEffectiveModel()}...` });
 
     const result = await testConnection();
     setConnectionStatus({
@@ -59,12 +60,23 @@ export default function Home() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `AcademicSAR_Report_${results.projectName || 'Evaluation'}_${new Date().toISOString().split('T')[0]}.html`;
+    const rubricLabel = results.rubricType === 'proposal' ? 'Proposal' : 'Thesis';
+    a.download = `AcademicSAR_${rubricLabel}_Report_${results.projectName || 'Evaluation'}_${new Date().toISOString().split('T')[0]}.html`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   };
+
+  const handleNewEvaluation = () => {
+    resetEvaluation();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Get criteria count based on rubric type
+  const criteriaCount = state.config.rubricType
+    ? getCriteriaByRubric(state.config.rubricType).length
+    : 0;
 
   // Render content based on active tab
   const renderContent = () => {
@@ -101,14 +113,14 @@ export default function Home() {
                     className="w-full h-full object-contain rounded-lg"
                   />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors rounded-xl flex items-center justify-center">
-                    <span className="opacity-0 group-hover:opacity-100 transition-opacity text-white text-xs font-medium bg-black/50 px-2 py-1 rounded">🔍 ดูใหญ่</span>
+                    <span className="opacity-0 group-hover:opacity-100 transition-opacity text-white text-xs font-medium bg-black/50 px-2 py-1 rounded">ดูใหญ่</span>
                   </div>
                 </button>
               </div>
             </div>
 
             {/* Step 1: AI Configuration */}
-            <Card title="⚙️ ขั้นตอนที่ 1: ตั้งค่า AI Provider" icon="">
+            <Card title="ขั้นตอนที่ 1: ตั้งค่า AI Provider" icon="⚙️">
               <ProviderSelector />
 
               {state.config.provider && (
@@ -121,7 +133,7 @@ export default function Home() {
                     isLoading={isTesting}
                     variant="secondary"
                   >
-                    🔗 ทดสอบการเชื่อมต่อ
+                    ทดสอบการเชื่อมต่อ
                   </Button>
 
                   <StatusMessage
@@ -134,7 +146,7 @@ export default function Home() {
             </Card>
 
             {/* Step 2: Select Rubric Type */}
-            <Card title="📋 ขั้นตอนที่ 2: เลือกประเภทการประเมิน" icon="">
+            <Card title="ขั้นตอนที่ 2: เลือกประเภทการประเมิน" icon="📋">
               <RubricSelector />
             </Card>
 
@@ -142,11 +154,11 @@ export default function Home() {
             <Card
               title={
                 <span className="flex items-center gap-3">
-                  📄 ขั้นตอนที่ 3: อัปโหลดเอกสาร
+                  ขั้นตอนที่ 3: อัปโหลดเอกสาร
                   {state.config.rubricType && <RubricBadge size="sm" />}
                 </span>
               }
-              icon=""
+              icon="📄"
             >
               {!state.config.rubricType ? (
                 <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
@@ -166,11 +178,11 @@ export default function Home() {
             <Card
               title={
                 <span className="flex items-center gap-3">
-                  🚀 ขั้นตอนที่ 4: เริ่มการประเมิน
+                  ขั้นตอนที่ 4: เริ่มการประเมิน
                   {state.config.rubricType && <RubricBadge size="sm" />}
                 </span>
               }
-              icon=""
+              icon="🚀"
             >
               <StartEvaluation />
             </Card>
@@ -183,33 +195,36 @@ export default function Home() {
               <div id="results-section">
                 <SummaryScore />
 
-                <Card title="👥 คณะผู้เชี่ยวชาญประเมิน" icon="">
+                <Card title="คณะผู้เชี่ยวชาญประเมิน" icon="👥">
                   <ExpertCards />
                 </Card>
 
-                <Card title="📈 คะแนนเปรียบเทียบ 8 หัวข้อ" icon="">
+                <Card title={`คะแนนเปรียบเทียบ ${criteriaCount} หัวข้อ`} icon="📈">
                   <ScoreTable />
                   <div className="mt-8">
                     <BarChart />
                   </div>
                 </Card>
 
-                <Card title="🔍 ผลการประเมินโดยละเอียด" icon="">
+                <Card title="ผลการประเมินโดยละเอียด" icon="🔍">
                   <ExpertDetailTabs />
                 </Card>
 
-                <Card title="💡 คำแนะนำสำคัญจากผู้เชี่ยวชาญ" icon="">
+                <Card title="คำแนะนำสำคัญจากผู้เชี่ยวชาญ" icon="💡">
                   <Recommendations />
                 </Card>
 
-                <Card title="🗺️ แผนการพัฒนางานวิจัย" icon="">
+                <Card title="แผนการพัฒนางานวิจัย" icon="🗺️">
                   <Roadmap />
                 </Card>
 
                 <div className="bg-white rounded-2xl shadow-md p-8 text-center no-print">
                   <div className="flex gap-4 justify-center mb-6 flex-wrap">
                     <Button onClick={handleDownloadReport} variant="success">
-                      💾 บันทึกรายงาน
+                      บันทึกรายงาน
+                    </Button>
+                    <Button onClick={handleNewEvaluation} variant="secondary">
+                      เริ่มการประเมินใหม่
                     </Button>
                   </div>
                 </div>

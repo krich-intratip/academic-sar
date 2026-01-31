@@ -5,7 +5,7 @@ import { useApp } from '@/context/AppContext';
 import { callAI, parseAIResponse } from '@/lib/ai';
 import { generateExpertPrompt, generateSummaryPrompt } from '@/lib/prompts';
 import { calculateSummary } from '@/lib/evaluation';
-import { ExpertEvaluation, EvaluationResults, experts } from '@/types/evaluation';
+import { ExpertEvaluation, EvaluationResults } from '@/types/evaluation';
 import { formatThaiDate, sleep, cleanHtmlResponse } from '@/lib/utils';
 
 export function useEvaluation() {
@@ -14,8 +14,10 @@ export function useEvaluation() {
 
     const runEvaluation = useCallback(async () => {
         const model = getEffectiveModel();
-        if (!state.config.provider || !state.config.apiKey || !model || !state.pdfText) {
-            setError('กรุณาตั้งค่าให้ครบถ้วนก่อนเริ่มประเมิน');
+        const rubricType = state.config.rubricType;
+
+        if (!state.config.provider || !state.config.apiKey || !model || !state.pdfText || !rubricType) {
+            setError('กรุณาตั้งค่าให้ครบถ้วนก่อนเริ่มประเมิน (รวมถึงเลือกประเภทการประเมิน)');
             return;
         }
 
@@ -27,6 +29,7 @@ export function useEvaluation() {
             projectName: '',
             organizationName: '',
             evaluationDate: formatThaiDate(),
+            rubricType: rubricType,
             experts: {},
             summary: null
         };
@@ -38,7 +41,7 @@ export function useEvaluation() {
 
             // Step 2: Expert 1 evaluation
             dispatch({ type: 'SET_CURRENT_STEP', payload: 2 });
-            const expert1Prompt = generateExpertPrompt('expert1', state.pdfText);
+            const expert1Prompt = generateExpertPrompt('expert1', state.pdfText, rubricType);
             const expert1Response = await callAI(state.config.provider, expert1Prompt, state.config.apiKey, model);
             const expert1Data = parseAIResponse<ExpertEvaluation>(expert1Response);
             results.experts.expert1 = expert1Data;
@@ -47,19 +50,19 @@ export function useEvaluation() {
 
             // Step 3: Expert 2 evaluation
             dispatch({ type: 'SET_CURRENT_STEP', payload: 3 });
-            const expert2Prompt = generateExpertPrompt('expert2', state.pdfText);
+            const expert2Prompt = generateExpertPrompt('expert2', state.pdfText, rubricType);
             const expert2Response = await callAI(state.config.provider, expert2Prompt, state.config.apiKey, model);
             results.experts.expert2 = parseAIResponse<ExpertEvaluation>(expert2Response);
 
             // Step 4: Expert 3 evaluation
             dispatch({ type: 'SET_CURRENT_STEP', payload: 4 });
-            const expert3Prompt = generateExpertPrompt('expert3', state.pdfText);
+            const expert3Prompt = generateExpertPrompt('expert3', state.pdfText, rubricType);
             const expert3Response = await callAI(state.config.provider, expert3Prompt, state.config.apiKey, model);
             results.experts.expert3 = parseAIResponse<ExpertEvaluation>(expert3Response);
 
             // Step 5: Calculate summary
             dispatch({ type: 'SET_CURRENT_STEP', payload: 5 });
-            results.summary = calculateSummary(results.experts);
+            results.summary = calculateSummary(results.experts, rubricType);
             await sleep(1000);
 
             dispatch({ type: 'SET_EVALUATION_RESULTS', payload: results });
@@ -119,10 +122,18 @@ export function useEvaluation() {
         }
     }, [state.config, getEffectiveModel]);
 
+    const resetEvaluation = useCallback(() => {
+        dispatch({ type: 'SET_EVALUATION_RESULTS', payload: null });
+        dispatch({ type: 'SET_CURRENT_STEP', payload: 0 });
+        dispatch({ type: 'CLEAR_PDF' });
+        setError(null);
+    }, [dispatch]);
+
     return {
         runEvaluation,
         summarizePdf,
         testConnection,
+        resetEvaluation,
         error,
         isEvaluating: state.isEvaluating,
         currentStep: state.currentStep,
