@@ -17,9 +17,21 @@ const tabs: { id: TabId; label: string; icon: string }[] = [
 // Version history data
 const versionHistory = [
     {
+        version: 'v3.2.0',
+        date: '2 กุมภาพันธ์ 2568',
+        type: 'major',
+        changes: [
+            'เพิ่ม DeepSeek และ Kimi (Moonshot) providers',
+            'ลบ OpenAI provider ที่ซ้ำซ้อน (ใช้ผ่าน OpenRouter แทน)',
+            'อัปเดต OpenRouter free models ใหม่ล่าสุด',
+            'ปรับปรุงการจัดการ error ของ API ให้ละเอียดขึ้น',
+            'แสดงราคาโดยประมาณของแต่ละโมเดล',
+        ],
+    },
+    {
         version: 'v3.1.0',
         date: '31 มกราคม 2568',
-        type: 'major',
+        type: 'minor',
         changes: [
             'ปรับปรุงเกณฑ์การประเมินตาม Rubric ที่ถูกต้อง',
             'โครงร่างวิทยานิพนธ์: 14 หัวข้อ (บทที่ 1-3)',
@@ -305,18 +317,22 @@ function NonFunctionalTab() {
                 </div>
 
                 <h4 className="text-md font-semibold text-gray-700 mt-6 mb-3">AI Providers ที่รองรับ</h4>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <div className="p-4 bg-gradient-to-r from-blue-50 to-white rounded-lg border border-blue-200">
                         <div className="font-semibold text-blue-700">🤖 Google Gemini</div>
-                        <div className="text-sm text-gray-600">แนะนำ - ฟรี</div>
+                        <div className="text-sm text-gray-600">แนะนำ - ฟรี (Free Tier)</div>
                     </div>
-                    <div className="p-4 bg-gradient-to-r from-green-50 to-white rounded-lg border border-green-200">
-                        <div className="font-semibold text-green-700">🧠 OpenAI</div>
-                        <div className="text-sm text-gray-600">GPT-4, GPT-4o</div>
+                    <div className="p-4 bg-gradient-to-r from-cyan-50 to-white rounded-lg border border-cyan-200">
+                        <div className="font-semibold text-cyan-700">🔵 DeepSeek</div>
+                        <div className="text-sm text-gray-600">ถูกมาก - ต้องเติมเงิน</div>
+                    </div>
+                    <div className="p-4 bg-gradient-to-r from-indigo-50 to-white rounded-lg border border-indigo-200">
+                        <div className="font-semibold text-indigo-700">🌙 Kimi (Moonshot)</div>
+                        <div className="text-sm text-gray-600">1T params - ต้องเติมเงิน</div>
                     </div>
                     <div className="p-4 bg-gradient-to-r from-purple-50 to-white rounded-lg border border-purple-200">
                         <div className="font-semibold text-purple-700">🔗 OpenRouter</div>
-                        <div className="text-sm text-gray-600">หลากหลาย Models</div>
+                        <div className="text-sm text-gray-600">300+ Models - มีฟรี!</div>
                     </div>
                 </div>
 

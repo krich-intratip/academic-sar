@@ -30,15 +30,41 @@ export default function ApiKeyInput() {
                         </>
                     )
                 };
-            case 'openai':
+            case 'deepseek':
                 return {
-                    label: 'OpenAI API Key',
+                    label: 'DeepSeek API Key',
                     info: (
                         <>
                             รับ API Key ได้ที่{' '}
-                            <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer"
+                            <a href="https://platform.deepseek.com/api_keys" target="_blank" rel="noopener noreferrer"
                                 className="text-blue-600 hover:underline">
-                                OpenAI Platform
+                                DeepSeek Platform
+                            </a>
+                            <br />
+                            ⚠️ ต้อง{' '}
+                            <a href="https://platform.deepseek.com/top_up" target="_blank" rel="noopener noreferrer"
+                                className="text-blue-600 hover:underline">
+                                เติมเงิน (Top Up)
+                            </a>{' '}
+                            ก่อนใช้งาน - ราคาถูกมาก!
+                        </>
+                    )
+                };
+            case 'kimi':
+                return {
+                    label: 'Kimi API Key',
+                    info: (
+                        <>
+                            รับ API Key ได้ที่{' '}
+                            <a href="https://platform.moonshot.ai/console" target="_blank" rel="noopener noreferrer"
+                                className="text-blue-600 hover:underline">
+                                Moonshot Platform
+                            </a>
+                            <br />
+                            🌙 โมเดล 1T params รองรับ 256K context -{' '}
+                            <a href="https://platform.moonshot.ai/console/pay" target="_blank" rel="noopener noreferrer"
+                                className="text-blue-600 hover:underline">
+                                เติมเงินเริ่มต้น $1
                             </a>
                         </>
                     )
@@ -54,7 +80,7 @@ export default function ApiKeyInput() {
                                 OpenRouter
                             </a>
                             <br />
-                            ✅ รองรับหลาย models รวมถึง Claude, DeepSeek, Qwen, Typhoon และอื่นๆ
+                            ✅ รองรับ 300+ models รวมถึง Claude, DeepSeek, Qwen, Typhoon และอื่นๆ - มีฟรี!
                         </>
                     )
                 };
