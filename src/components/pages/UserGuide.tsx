@@ -23,7 +23,7 @@ export default function UserGuide() {
                         <div>
                             <h4 className="font-semibold mb-1">เลือก AI Provider</h4>
                             <p className="text-gray-600 text-sm">
-                                เลือก Provider ที่ต้องการใช้งาน ได้แก่ Google Gemini (แนะนำ - ฟรี), OpenAI, หรือ OpenRouter
+                                เลือก Provider ที่ต้องการใช้งาน ได้แก่ Google Gemini (แนะนำ - ฟรี), DeepSeek, Kimi หรือ OpenRouter
                             </p>
                         </div>
                     </div>
@@ -32,7 +32,7 @@ export default function UserGuide() {
                         <div>
                             <h4 className="font-semibold mb-1">กรอก API Key</h4>
                             <p className="text-gray-600 text-sm">
-                                กรอก API Key ของ Provider ที่เลือก สามารถขอรับ API Key ฟรีได้จากลิงก์ที่ระบุ
+                                กรอก API Key ของ Provider ที่เลือก สามารถขอรับ API Key ได้จากลิงก์ที่ระบุในแต่ละ Provider
                             </p>
                         </div>
                     </div>
@@ -41,7 +41,7 @@ export default function UserGuide() {
                         <div>
                             <h4 className="font-semibold mb-1">เลือก Model</h4>
                             <p className="text-gray-600 text-sm">
-                                เลือก AI Model ที่ต้องการใช้ โดยระบบแนะนำให้ใช้ Gemini 2.5 Flash หรือ Pro
+                                เลือก AI Model ที่ต้องการใช้ โดยระบบแนะนำให้ใช้ Gemini 2.5 Flash หรือ DeepSeek Chat
                             </p>
                         </div>
                     </div>
@@ -52,6 +52,79 @@ export default function UserGuide() {
                             <p className="text-gray-600 text-sm">
                                 กดปุ่ม &quot;ทดสอบการเชื่อมต่อ&quot; เพื่อตรวจสอบว่า API Key และ Model ทำงานได้ถูกต้อง
                             </p>
+                        </div>
+                    </div>
+                </div>
+            </Card>
+
+            {/* AI Providers Guide - NEW */}
+            <Card title="วิธีสมัครและรับ API Key" icon="🔑">
+                <div className="space-y-6">
+                    {/* Gemini */}
+                    <div className="p-4 bg-gradient-to-r from-blue-50 to-white rounded-lg border-l-4 border-blue-500">
+                        <div className="flex items-center gap-2 mb-3">
+                            <span className="text-2xl">🔷</span>
+                            <h4 className="font-semibold text-blue-700">Google Gemini (แนะนำ - ฟรี!)</h4>
+                        </div>
+                        <ol className="text-sm text-gray-600 space-y-2 list-decimal list-inside">
+                            <li>ไปที่ <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline font-medium">Google AI Studio</a></li>
+                            <li>ลงชื่อเข้าใช้ด้วย Google Account</li>
+                            <li>คลิก &quot;Create API Key&quot; เพื่อสร้าง API Key ใหม่</li>
+                            <li>Copy API Key มาใช้งานได้เลย</li>
+                        </ol>
+                        <div className="mt-3 p-2 bg-green-50 rounded text-xs text-green-700">
+                            ✅ <strong>ฟรี!</strong> มี Free Tier ใช้งานได้ไม่จำกัด (มี rate limit)
+                        </div>
+                    </div>
+
+                    {/* DeepSeek */}
+                    <div className="p-4 bg-gradient-to-r from-cyan-50 to-white rounded-lg border-l-4 border-cyan-500">
+                        <div className="flex items-center gap-2 mb-3">
+                            <span className="text-2xl">🔵</span>
+                            <h4 className="font-semibold text-cyan-700">DeepSeek (ราคาถูกมาก)</h4>
+                        </div>
+                        <ol className="text-sm text-gray-600 space-y-2 list-decimal list-inside">
+                            <li>ไปที่ <a href="https://platform.deepseek.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline font-medium">DeepSeek Platform</a></li>
+                            <li>สมัครสมาชิกด้วย Email หรือ Google Account</li>
+                            <li>ไปที่ <a href="https://platform.deepseek.com/api_keys" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline font-medium">API Keys</a> และสร้าง API Key ใหม่</li>
+                            <li><strong className="text-orange-600">สำคัญ!</strong> ต้อง <a href="https://platform.deepseek.com/top_up" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline font-medium">เติมเงิน (Top Up)</a> ก่อนใช้งาน</li>
+                        </ol>
+                        <div className="mt-3 p-2 bg-orange-50 rounded text-xs text-orange-700">
+                            💰 <strong>ราคาถูกมาก!</strong> เริ่มต้น $0.14/1M tokens - แนะนำเติม $2-5 ใช้ได้นาน
+                        </div>
+                    </div>
+
+                    {/* Kimi */}
+                    <div className="p-4 bg-gradient-to-r from-indigo-50 to-white rounded-lg border-l-4 border-indigo-500">
+                        <div className="flex items-center gap-2 mb-3">
+                            <span className="text-2xl">🌙</span>
+                            <h4 className="font-semibold text-indigo-700">Kimi / Moonshot (1T params)</h4>
+                        </div>
+                        <ol className="text-sm text-gray-600 space-y-2 list-decimal list-inside">
+                            <li>ไปที่ <a href="https://platform.moonshot.ai/console" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline font-medium">Moonshot Platform</a></li>
+                            <li>สมัครสมาชิกด้วย Email (รองรับ Email ไทย)</li>
+                            <li>ไปที่ API Keys และสร้าง API Key ใหม่</li>
+                            <li><strong className="text-orange-600">สำคัญ!</strong> ต้อง <a href="https://platform.moonshot.ai/console/pay" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline font-medium">เติมเงิน</a> ก่อนใช้งาน</li>
+                        </ol>
+                        <div className="mt-3 p-2 bg-indigo-50 rounded text-xs text-indigo-700">
+                            🌙 <strong>Context ยาว!</strong> รองรับ 256K context - เติมเงินเริ่มต้น $1
+                        </div>
+                    </div>
+
+                    {/* OpenRouter */}
+                    <div className="p-4 bg-gradient-to-r from-purple-50 to-white rounded-lg border-l-4 border-purple-500">
+                        <div className="flex items-center gap-2 mb-3">
+                            <span className="text-2xl">🔗</span>
+                            <h4 className="font-semibold text-purple-700">OpenRouter (300+ Models)</h4>
+                        </div>
+                        <ol className="text-sm text-gray-600 space-y-2 list-decimal list-inside">
+                            <li>ไปที่ <a href="https://openrouter.ai" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline font-medium">OpenRouter.ai</a></li>
+                            <li>ลงชื่อเข้าใช้ด้วย Google Account หรือ Email</li>
+                            <li>ไปที่ <a href="https://openrouter.ai/keys" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline font-medium">API Keys</a> และสร้าง API Key ใหม่</li>
+                            <li>เลือกโมเดลที่มี 🆓 หมายถึงใช้ฟรี หรือเติมเงินสำหรับโมเดลพรีเมียม</li>
+                        </ol>
+                        <div className="mt-3 p-2 bg-purple-50 rounded text-xs text-purple-700">
+                            🆓 <strong>มีโมเดลฟรี!</strong> Gemini, DeepSeek, Qwen, Llama และอื่นๆ - ใช้ฟรีได้เลย
                         </div>
                     </div>
                 </div>
@@ -72,7 +145,7 @@ export default function UserGuide() {
                             </div>
                             <ul className="text-sm text-gray-600 space-y-1">
                                 <li>• ครอบคลุม <strong>บทที่ 1-3</strong></li>
-                                <li>• เน้นความชัดเจนของปัญหาและระเบียบวิธีวิจัย</li>
+                                <li>• เกณฑ์ประเมิน <strong>14 หัวข้อ</strong></li>
                                 <li>• น้ำหนักสูงสุดที่ บทที่ 3 (40 คะแนน)</li>
                                 <li>• ผลลัพธ์: อนุมัติ / อนุมัติมีเงื่อนไข / ไม่อนุมัติ</li>
                             </ul>
@@ -85,7 +158,7 @@ export default function UserGuide() {
                             </div>
                             <ul className="text-sm text-gray-600 space-y-1">
                                 <li>• ครอบคลุม <strong>5 บท</strong> ครบถ้วน</li>
-                                <li>• รวมการประเมินผลการวิจัยและการอภิปราย</li>
+                                <li>• เกณฑ์ประเมิน <strong>24 หัวข้อ</strong></li>
                                 <li>• ประเมินมาตรฐานวิชาการและจริยธรรม</li>
                                 <li>• ผลลัพธ์: ดีมาก / ดี / พอใช้ / ไม่ผ่าน</li>
                             </ul>
@@ -168,11 +241,20 @@ export default function UserGuide() {
                             </p>
                         </div>
                     </div>
+                    <div className="flex items-start gap-4">
+                        <span className="flex-shrink-0 w-8 h-8 bg-[#E65100] text-white rounded-full flex items-center justify-center font-bold">3</span>
+                        <div>
+                            <h4 className="font-semibold mb-1">เริ่มการประเมินใหม่</h4>
+                            <p className="text-gray-600 text-sm">
+                                กดปุ่ม &quot;เริ่มการประเมินใหม่&quot; เพื่อประเมินเอกสารอื่น
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </Card>
 
             {/* Evaluation Criteria - Proposal */}
-            <Card title="เกณฑ์การประเมินโครงร่างวิทยานิพนธ์" icon="📝">
+            <Card title="เกณฑ์การประเมินโครงร่างวิทยานิพนธ์ (14 หัวข้อ)" icon="📝">
                 <div className="space-y-4">
                     <div className="p-3 bg-blue-50 rounded-lg border-l-4 border-[#1976D2]">
                         <h4 className="font-semibold text-[#1976D2] mb-2">บทที่ 1: บทนำ (25 คะแนน)</h4>
@@ -229,7 +311,7 @@ export default function UserGuide() {
             </Card>
 
             {/* Evaluation Criteria - Full Thesis */}
-            <Card title="เกณฑ์การประเมินวิทยานิพนธ์ฉบับเต็ม" icon="📚">
+            <Card title="เกณฑ์การประเมินวิทยานิพนธ์ฉบับเต็ม (24 หัวข้อ)" icon="📚">
                 <div className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div className="p-3 bg-blue-50 rounded-lg">

@@ -17,9 +17,20 @@ const tabs: { id: TabId; label: string; icon: string }[] = [
 // Version history data
 const versionHistory = [
     {
+        version: 'v3.3.0',
+        date: '6 กุมภาพันธ์ 2568',
+        type: 'major',
+        changes: [
+            'ปรับปรุงคู่มือให้ตรงกับ providers ปัจจุบัน',
+            'เพิ่มรายละเอียดขั้นตอนการสมัครและรับ API Key ครบทุก provider',
+            'เพิ่มคำอธิบายเกณฑ์ประเมิน 14 หัวข้อ (Proposal) และ 24 หัวข้อ (Thesis)',
+            'เพิ่มขั้นตอน "เริ่มการประเมินใหม่" ในคู่มือ',
+        ],
+    },
+    {
         version: 'v3.2.0',
         date: '2 กุมภาพันธ์ 2568',
-        type: 'major',
+        type: 'minor',
         changes: [
             'เพิ่ม DeepSeek และ Kimi (Moonshot) providers',
             'ลบ OpenAI provider ที่ซ้ำซ้อน (ใช้ผ่าน OpenRouter แทน)',
