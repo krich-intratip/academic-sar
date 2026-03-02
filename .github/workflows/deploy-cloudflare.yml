@@ -29,9 +29,16 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Get sanitized commit info
+        id: commit_info
+        run: |
+          # Use only ASCII-safe short SHA and ref name — Cloudflare Pages API rejects non-ASCII commit messages
+          echo "sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+          echo "ref=${GITHUB_REF_NAME}" >> $GITHUB_OUTPUT
+
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy out --project-name=academic-sar --commit-dirty=true
+          command: pages deploy out --project-name=academic-sar --commit-dirty=true --commit-message="Deploy ${{ steps.commit_info.outputs.sha }} on ${{ steps.commit_info.outputs.ref }}"
