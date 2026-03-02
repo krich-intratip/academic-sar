@@ -220,7 +220,7 @@ export default function UserGuide() {
                 </div>
             </Card>
 
-            {/* Step 5: View Results */}
+            {/* Step 5: View Results & Export */}
             <Card title="ขั้นตอนที่ 5: ดูผลการประเมินและบันทึกรายงาน" icon="📊">
                 <div className="space-y-4">
                     <div className="flex items-start gap-4">
@@ -235,21 +235,44 @@ export default function UserGuide() {
                     <div className="flex items-start gap-4">
                         <span className="flex-shrink-0 w-8 h-8 bg-[#E65100] text-white rounded-full flex items-center justify-center font-bold">2</span>
                         <div>
-                            <h4 className="font-semibold mb-1">บันทึกรายงาน</h4>
+                            <h4 className="font-semibold mb-1">บันทึกรายงาน HTML</h4>
                             <p className="text-gray-600 text-sm">
-                                กดปุ่ม &quot;บันทึกรายงาน&quot; เพื่อดาวน์โหลดผลการประเมินเป็นไฟล์ HTML
+                                กดปุ่ม &quot;📄 บันทึก HTML&quot; เพื่อดาวน์โหลดผลการประเมินเป็นไฟล์ HTML สำหรับอ่านและพิมพ์
                             </p>
                         </div>
                     </div>
                     <div className="flex items-start gap-4">
                         <span className="flex-shrink-0 w-8 h-8 bg-[#E65100] text-white rounded-full flex items-center justify-center font-bold">3</span>
                         <div>
+                            <h4 className="font-semibold mb-1">บันทึก Markdown (.md) — ฟีเจอร์ใหม่ v3.4.0</h4>
+                            <p className="text-gray-600 text-sm">
+                                กดปุ่ม &quot;📝 บันทึก Markdown (.md)&quot; เพื่อดาวน์โหลดผลการประเมินในรูปแบบ Markdown
+                                ซึ่งเหมาะสำหรับ:
+                            </p>
+                            <ul className="text-gray-600 text-sm mt-2 space-y-1 list-disc list-inside ml-2">
+                                <li>เปิดใน VS Code, Obsidian, Notion, Typora เพื่อแก้ไขและบันทึกโน้ต</li>
+                                <li>ดู Checklist แผนการพัฒนางานวิจัยที่ติ๊กถูกได้</li>
+                                <li>ใช้เป็นเอกสารอ้างอิงเมื่อปรึกษาอาจารย์ที่ปรึกษา</li>
+                                <li>นำไปศึกษาเพิ่มเติมและพัฒนางานวิจัยต่อ</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div className="flex items-start gap-4">
+                        <span className="flex-shrink-0 w-8 h-8 bg-[#E65100] text-white rounded-full flex items-center justify-center font-bold">4</span>
+                        <div>
                             <h4 className="font-semibold mb-1">เริ่มการประเมินใหม่</h4>
                             <p className="text-gray-600 text-sm">
-                                กดปุ่ม &quot;เริ่มการประเมินใหม่&quot; เพื่อประเมินเอกสารอื่น
+                                กดปุ่ม &quot;🔄 เริ่มการประเมินใหม่&quot; เพื่อประเมินเอกสารอื่น
                             </p>
                         </div>
                     </div>
+                </div>
+                <div className="mt-4 p-4 bg-purple-50 rounded-lg border-l-4 border-[#7B1FA2]">
+                    <p className="text-sm text-[#7B1FA2]">
+                        <strong>📝 เกี่ยวกับไฟล์ Markdown:</strong> ไฟล์ .md มีรายงานคะแนนครบถ้วน,
+                        คำแนะนำจำแนกตามระดับความสำคัญ และแผนพัฒนาที่เป็น Checklist
+                        ภาษาไทยแสดงผลถูกต้องในทุก Markdown viewer
+                    </p>
                 </div>
             </Card>
 

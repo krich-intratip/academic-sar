@@ -17,9 +17,22 @@ const tabs: { id: TabId; label: string; icon: string }[] = [
 // Version history data
 const versionHistory = [
     {
+        version: 'v3.4.0',
+        date: '2 มีนาคม 2569',
+        type: 'major',
+        changes: [
+            'เพิ่มฟีเจอร์ Export รายงานเป็นไฟล์ Markdown (.md) ภาษาไทย',
+            'รองรับทั้งโครงร่างวิทยานิพนธ์และวิทยานิพนธ์ฉบับเต็ม',
+            'รายงาน Markdown มีตารางคะแนน, คำแนะนำ, แผนพัฒนา และ Checklist',
+            'เพิ่ม BOM สำหรับการแสดงภาษาไทยที่ถูกต้องบน Windows',
+            'แก้ไขปัญหาความปลอดภัย: ปรับปรุง error logging ใน AI service',
+            'อัปเดตคู่มือให้ครอบคลุมฟีเจอร์ Markdown export',
+        ],
+    },
+    {
         version: 'v3.3.0',
         date: '6 กุมภาพันธ์ 2568',
-        type: 'major',
+        type: 'minor',
         changes: [
             'ปรับปรุงคู่มือให้ตรงกับ providers ปัจจุบัน',
             'เพิ่มรายละเอียดขั้นตอนการสมัครและรับ API Key ครบทุก provider',
@@ -271,8 +284,8 @@ function FunctionalTab() {
                     />
                     <FeatureCard
                         icon="💾"
-                        title="Export รายงาน HTML"
-                        description="บันทึกผลการประเมินและคำแนะนำเป็นไฟล์ HTML"
+                        title="Export รายงาน HTML & Markdown"
+                        description="บันทึกเป็น HTML (พร้อมพิมพ์) หรือ Markdown (.md) สำหรับนำไปศึกษาพัฒนางานวิจัยต่อ"
                         color="#F3E5F5"
                         borderColor="#7B1FA2"
                     />

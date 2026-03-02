@@ -1,8 +1,9 @@
 // Report Export Utility
 // Generates standalone HTML report with inline styling
+// Generates Markdown (.md) report for research development
 
 import { EvaluationResults, experts, getCriteriaByRubric, RubricCriteria } from '@/types/evaluation';
-import { RubricType } from '@/types/app';
+import { RubricType, APP_VERSION } from '@/types/app';
 import { generateOverallSummary, getExpertTotalScore, collectAllRecommendations } from '@/lib/evaluation';
 import { getQualityColor } from '@/lib/utils';
 
@@ -569,4 +570,326 @@ export function generateHtmlReport(results: EvaluationResults): string {
 </html>`;
 
     return html;
+}
+
+// ========================================================
+// Markdown Report Generator
+// ========================================================
+
+/**
+ * Escapes characters that would break Markdown table cells.
+ */
+function escapeMdCell(value: string | number): string {
+    return String(value).replace(/\|/g, '\\|').replace(/\n/g, ' ').trim();
+}
+
+/**
+ * Converts priority code to Thai label with emoji.
+ */
+function priorityLabel(priority: 'critical' | 'high' | 'enhancement'): string {
+    switch (priority) {
+        case 'critical': return '🚨 วิกฤต';
+        case 'high': return '⚠️ สำคัญ';
+        case 'enhancement': return '💡 เสริม';
+    }
+}
+
+/**
+ * Generates a Markdown (.md) report from evaluation results.
+ * The report is formatted for readability in GitHub, VS Code, Obsidian, etc.
+ * Uses Thai language throughout for academic research use.
+ */
+export function generateMarkdownReport(results: EvaluationResults): string {
+    const { summary, projectName, organizationName, evaluationDate, rubricType } = results;
+
+    if (!summary) return '';
+
+    const criteria = getCriteriaByRubric(rubricType);
+    const expertEntries = Object.entries(results.experts).filter(([, data]) => data);
+    const allRecommendations = collectAllRecommendations(results.experts);
+    const overallSummary = generateOverallSummary(summary, results.experts, rubricType);
+
+    const rubricLabel = rubricType === 'proposal'
+        ? 'โครงร่างวิทยานิพนธ์ (บทที่ 1-3)'
+        : 'วิทยานิพนธ์ฉบับเต็ม (5 บท)';
+    const rubricIcon = rubricType === 'proposal' ? '📝' : '📚';
+
+    const generatedAt = new Date().toLocaleDateString('th-TH', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+    });
+
+    // Group criteria by chapter
+    const groupedCriteria: Record<string, RubricCriteria[]> = {};
+    criteria.forEach(c => {
+        const chapter = c.chapter || 'อื่นๆ';
+        if (!groupedCriteria[chapter]) groupedCriteria[chapter] = [];
+        groupedCriteria[chapter].push(c);
+    });
+
+    const lines: string[] = [];
+
+    // ── Header ──────────────────────────────────────────────
+    lines.push(`# รายงานผลการประเมินงานวิจัย`);
+    lines.push(`**ระบบประเมินโครงร่างและวิทยานิพนธ์ | Academic SAR ${APP_VERSION}**`);
+    lines.push('');
+    lines.push('---');
+    lines.push('');
+
+    // ── Project Info ─────────────────────────────────────────
+    lines.push('## ข้อมูลงานวิจัย');
+    lines.push('');
+    lines.push('| รายการ | ข้อมูล |');
+    lines.push('|--------|--------|');
+    lines.push(`| ชื่องานวิจัย | ${escapeMdCell(projectName || '-')} |`);
+    lines.push(`| ผู้แต่ง / นักศึกษา | ${escapeMdCell(organizationName || '-')} |`);
+    lines.push(`| ประเภทการประเมิน | ${rubricIcon} ${escapeMdCell(rubricLabel)} |`);
+    lines.push(`| วันที่ประเมิน | ${escapeMdCell(evaluationDate || '-')} |`);
+    lines.push(`| วันที่สร้างรายงาน | ${escapeMdCell(generatedAt)} |`);
+    lines.push('');
+    lines.push('---');
+    lines.push('');
+
+    // ── Summary Score ─────────────────────────────────────────
+    lines.push('## ผลสรุปการประเมิน');
+    lines.push('');
+    lines.push(`> **คะแนนรวม: ${summary.totalScore.toFixed(1)} / ${summary.maxPossibleScore} คะแนน (${summary.percentage.toFixed(1)}%)**`);
+    lines.push(`>`);
+    lines.push(`> **ระดับคุณภาพ: ${summary.qualityLevel}**`);
+    lines.push('');
+    lines.push(overallSummary);
+    lines.push('');
+    lines.push('---');
+    lines.push('');
+
+    // ── Expert Overview ──────────────────────────────────────
+    lines.push('## คณะผู้เชี่ยวชาญประเมิน');
+    lines.push('');
+    lines.push('| ผู้เชี่ยวชาญ | ตำแหน่ง | คะแนนรวม | บทสรุปจากผู้เชี่ยวชาญ |');
+    lines.push('|-------------|---------|----------|-----------------------|');
+
+    expertEntries.forEach(([expertId, expertData]) => {
+        const expert = experts[expertId];
+        if (!expert || !expertData) return;
+        const totalScore = getExpertTotalScore(expertData, rubricType);
+        lines.push(
+            `| ${expert.avatar} ${escapeMdCell(expert.name)} | ${escapeMdCell(expert.title)} | **${totalScore.toFixed(1)}/100** | *${escapeMdCell(expertData.summaryQuote)}* |`
+        );
+    });
+
+    lines.push('');
+    lines.push('---');
+    lines.push('');
+
+    // ── Score Comparison Table ────────────────────────────────
+    lines.push(`## ตารางคะแนนเปรียบเทียบ (${criteria.length} เกณฑ์)`);
+    lines.push('');
+
+    // Build table header columns
+    const expertHeaderCols = expertEntries
+        .map(([expertId]) => `${experts[expertId]?.avatar || ''} ผู้เชี่ยวชาญ ${expertId.replace('expert', '')}`)
+        .join(' | ');
+    const expertSepCols = expertEntries.map(() => ':-------:').join(' | ');
+
+    Object.entries(groupedCriteria).forEach(([chapter, items]) => {
+        const chapterTotal = items.reduce((sum, item) => sum + item.maxScore, 0);
+        lines.push(`### ${chapter} (${chapterTotal} คะแนน)`);
+        lines.push('');
+        lines.push(`| # | หัวข้อ | คะแนนเต็ม | ${expertHeaderCols} | ค่าเฉลี่ย |`);
+        lines.push(`|---|--------|:---------:|${expertSepCols}|:---------:|`);
+
+        items.forEach(criterion => {
+            const scores = expertEntries.map(([, expertData]) => {
+                const scoreItem = expertData?.scores?.find(s => s.criteriaId === criterion.id);
+                return scoreItem?.score ?? 0;
+            });
+            const avg = scores.length > 0 ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
+            const scoreCols = scores.map(s => `**${s}**`).join(' | ');
+            lines.push(
+                `| ${criterion.id} | ${escapeMdCell(criterion.name)} | ${criterion.maxScore} | ${scoreCols} | **${avg.toFixed(1)}** |`
+            );
+        });
+
+        lines.push('');
+    });
+
+    lines.push(`**คะแนนรวมทั้งหมด: ${summary.totalScore.toFixed(1)} / ${summary.maxPossibleScore} คะแนน**`);
+    lines.push('');
+    lines.push('---');
+    lines.push('');
+
+    // ── Expert Detail Evaluations ──────────────────────────────
+    lines.push('## ผลการประเมินรายผู้เชี่ยวชาญ');
+    lines.push('');
+
+    expertEntries.forEach(([expertId, expertData]) => {
+        const expert = experts[expertId];
+        if (!expert || !expertData) return;
+        const totalScore = getExpertTotalScore(expertData, rubricType);
+        const expertNum = expertId.replace('expert', '');
+
+        lines.push('---');
+        lines.push('');
+        lines.push(`### ${expert.avatar} ผู้เชี่ยวชาญที่ ${expertNum}: ${expert.name}`);
+        lines.push('');
+        lines.push(`**ตำแหน่ง:** ${expert.title}  `);
+        lines.push(`**ความเชี่ยวชาญ:** ${expert.experience}  `);
+        lines.push(`**คะแนนรวม:** **${totalScore.toFixed(1)} / 100 คะแนน**`);
+        lines.push('');
+
+        lines.push('**ความเห็นโดยรวม:**');
+        lines.push('');
+        lines.push(`> ${expertData.overallComment}`);
+        lines.push('');
+
+        // Score detail table
+        lines.push('#### คะแนนรายข้อพร้อมเหตุผล');
+        lines.push('');
+        lines.push('| หัวข้อ | คะแนน / เต็ม | เหตุผลประกอบ |');
+        lines.push('|--------|:------------:|--------------|');
+
+        expertData.scores?.forEach(scoreItem => {
+            const criterion = criteria.find(c => c.id === scoreItem.criteriaId);
+            if (!criterion) return;
+            lines.push(
+                `| ${escapeMdCell(criterion.name)} | **${scoreItem.score}/${criterion.maxScore}** | ${escapeMdCell(scoreItem.reason)} |`
+            );
+        });
+
+        lines.push('');
+
+        // Strengths
+        lines.push('#### จุดแข็ง (Strengths)');
+        lines.push('');
+        (expertData.strengths || []).forEach(s => {
+            lines.push(`- ${s}`);
+        });
+        lines.push('');
+
+        // Weaknesses
+        lines.push('#### จุดที่ควรพัฒนา (Weaknesses)');
+        lines.push('');
+        (expertData.weaknesses || []).forEach(w => {
+            lines.push(`- ${w}`);
+        });
+        lines.push('');
+
+        // Recommendations per expert
+        if (expertData.recommendations && expertData.recommendations.length > 0) {
+            lines.push('#### คำแนะนำ (Recommendations)');
+            lines.push('');
+            expertData.recommendations.forEach(rec => {
+                lines.push(`**[${priorityLabel(rec.priority)}] ${rec.title}**  `);
+                lines.push(`รายละเอียด: ${rec.detail}  `);
+                lines.push(`ผลที่คาดหวัง: ${rec.expectedResult}`);
+                lines.push('');
+            });
+        }
+    });
+
+    lines.push('---');
+    lines.push('');
+
+    // ── Consolidated Recommendations ──────────────────────────
+    lines.push('## สรุปคำแนะนำสำคัญจากผู้เชี่ยวชาญทั้งหมด');
+    lines.push('');
+
+    const critical = allRecommendations.filter(r => r.priority === 'critical');
+    const high = allRecommendations.filter(r => r.priority === 'high');
+    const enhancement = allRecommendations.filter(r => r.priority === 'enhancement');
+
+    if (critical.length > 0) {
+        lines.push('### 🚨 คำแนะนำระดับวิกฤต (Critical) — ต้องแก้ไขก่อนส่งสอบ');
+        lines.push('');
+        critical.forEach((rec, i) => {
+            const expertName = experts[rec.source]?.name || rec.source;
+            lines.push(`**${i + 1}. ${rec.title}** *(${expertName})*  `);
+            lines.push(`รายละเอียด: ${rec.detail}  `);
+            lines.push(`ผลที่คาดหวัง: ${rec.expectedResult}`);
+            lines.push('');
+        });
+    }
+
+    if (high.length > 0) {
+        lines.push('### ⚠️ คำแนะนำระดับสำคัญ (High) — ควรแก้ไขก่อนส่งสอบ');
+        lines.push('');
+        high.forEach((rec, i) => {
+            const expertName = experts[rec.source]?.name || rec.source;
+            lines.push(`**${i + 1}. ${rec.title}** *(${expertName})*  `);
+            lines.push(`รายละเอียด: ${rec.detail}  `);
+            lines.push(`ผลที่คาดหวัง: ${rec.expectedResult}`);
+            lines.push('');
+        });
+    }
+
+    if (enhancement.length > 0) {
+        lines.push('### 💡 คำแนะนำเสริม (Enhancement) — เพิ่มคุณภาพงานวิจัย');
+        lines.push('');
+        enhancement.forEach((rec, i) => {
+            const expertName = experts[rec.source]?.name || rec.source;
+            lines.push(`**${i + 1}. ${rec.title}** *(${expertName})*  `);
+            lines.push(`รายละเอียด: ${rec.detail}  `);
+            lines.push(`ผลที่คาดหวัง: ${rec.expectedResult}`);
+            lines.push('');
+        });
+    }
+
+    lines.push('---');
+    lines.push('');
+
+    // ── Development Roadmap ───────────────────────────────────
+    lines.push('## แผนการพัฒนางานวิจัย');
+    lines.push('');
+    lines.push('ตามผลการประเมินของผู้เชี่ยวชาญทั้ง 3 ท่าน แนะนำให้ดำเนินการดังนี้:');
+    lines.push('');
+
+    if (critical.length > 0) {
+        lines.push('### ระยะเร่งด่วน — ภายใน 1-2 สัปดาห์ 🚨');
+        lines.push('');
+        critical.forEach((rec, i) => {
+            lines.push(`- [ ] **${i + 1}. ${rec.title}** — ${rec.detail}`);
+        });
+        lines.push('');
+    }
+
+    if (high.length > 0) {
+        lines.push('### ระยะสำคัญ — ภายใน 1 เดือน ⚠️');
+        lines.push('');
+        high.forEach((rec, i) => {
+            lines.push(`- [ ] **${i + 1}. ${rec.title}** — ${rec.detail}`);
+        });
+        lines.push('');
+    }
+
+    if (enhancement.length > 0) {
+        lines.push('### ระยะปรับปรุงคุณภาพ — ระยะยาว 💡');
+        lines.push('');
+        enhancement.forEach((rec, i) => {
+            lines.push(`- [ ] **${i + 1}. ${rec.title}** — ${rec.detail}`);
+        });
+        lines.push('');
+    }
+
+    lines.push('---');
+    lines.push('');
+
+    // ── Disclaimer ────────────────────────────────────────────
+    lines.push('## หมายเหตุและข้อควรระวัง');
+    lines.push('');
+    lines.push('> ⚠️ **คำเตือน:** รายงานนี้เป็นการประเมินเบื้องต้นโดย AI ควรใช้ร่วมกับการรีวิวจากผู้เชี่ยวชาญมนุษย์จริงเสมอ');
+    lines.push('>');
+    lines.push('> การประเมินโดย AI อาจมีข้อจำกัดในการทำความเข้าใจบริบทเฉพาะสาขา ควรนำผลไปปรึกษากับอาจารย์ที่ปรึกษาก่อนดำเนินการแก้ไข');
+    lines.push('');
+
+    // ── Footer ────────────────────────────────────────────────
+    lines.push('---');
+    lines.push('');
+    lines.push('*จัดทำโดยระบบประเมินโครงร่างและวิทยานิพนธ์ Academic SAR*  ');
+    lines.push('*พล.ท.ดร.กริช อินทราทิพย์ | License @2025*  ');
+    lines.push(`*สร้างเมื่อ: ${generatedAt}*`);
+
+    return lines.join('\n');
 }

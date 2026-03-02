@@ -208,8 +208,10 @@ export function parseAIResponse<T>(responseText: string): T {
 
     try {
         return JSON.parse(cleanedText) as T;
-    } catch (error) {
-        console.error('JSON Parse Error:', error, 'Raw:', responseText);
-        throw new Error('ไม่สามารถแปลงผลลัพธ์เป็น JSON ได้');
+    } catch {
+        // Log only length and prefix to avoid leaking sensitive document content
+        const preview = responseText.length > 120 ? responseText.slice(0, 120) + '…' : responseText;
+        console.error(`JSON Parse Error — response length: ${responseText.length}, preview: ${preview}`);
+        throw new Error('ไม่สามารถแปลงผลลัพธ์เป็น JSON ได้ กรุณาลองใหม่อีกครั้ง');
     }
 }

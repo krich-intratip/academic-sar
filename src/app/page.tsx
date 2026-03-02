@@ -20,7 +20,7 @@ import {
   Roadmap
 } from '@/components/results';
 import { UserGuide, About } from '@/components/pages';
-import { generateHtmlReport } from '@/lib/reportExport';
+import { generateHtmlReport, generateMarkdownReport } from '@/lib/reportExport';
 import { getCriteriaByRubric } from '@/types/evaluation';
 
 export default function Home() {
@@ -62,6 +62,24 @@ export default function Home() {
     a.href = url;
     const rubricLabel = results.rubricType === 'proposal' ? 'Proposal' : 'Thesis';
     a.download = `AcademicSAR_${rubricLabel}_Report_${results.projectName || 'Evaluation'}_${new Date().toISOString().split('T')[0]}.html`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  const handleDownloadMarkdown = () => {
+    if (!results) return;
+
+    // BOM prefix ensures Thai characters display correctly in Windows editors
+    const BOM = '\uFEFF';
+    const mdContent = BOM + generateMarkdownReport(results);
+    const blob = new Blob([mdContent], { type: 'text/markdown;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    const rubricLabel = results.rubricType === 'proposal' ? 'Proposal' : 'Thesis';
+    a.download = `AcademicSAR_${rubricLabel}_Notes_${results.projectName || 'Evaluation'}_${new Date().toISOString().split('T')[0]}.md`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -219,14 +237,21 @@ export default function Home() {
                 </Card>
 
                 <div className="bg-white rounded-2xl shadow-md p-8 text-center no-print">
+                  <p className="text-sm text-gray-500 mb-4">บันทึกผลการประเมินในรูปแบบที่ต้องการ</p>
                   <div className="flex gap-4 justify-center mb-6 flex-wrap">
                     <Button onClick={handleDownloadReport} variant="success">
-                      บันทึกรายงาน
+                      📄 บันทึก HTML
+                    </Button>
+                    <Button onClick={handleDownloadMarkdown} variant="secondary">
+                      📝 บันทึก Markdown (.md)
                     </Button>
                     <Button onClick={handleNewEvaluation} variant="secondary">
-                      เริ่มการประเมินใหม่
+                      🔄 เริ่มการประเมินใหม่
                     </Button>
                   </div>
+                  <p className="text-xs text-gray-400">
+                    HTML: รายงานพร้อมพิมพ์ | Markdown: นำไปศึกษาและพัฒนางานวิจัยต่อ
+                  </p>
                 </div>
 
                 <Footer />
