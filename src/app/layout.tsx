@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   keywords: ["thesis", "proposal", "วิทยานิพนธ์", "โครงร่างวิทยานิพนธ์", "ประเมินวิทยานิพนธ์", "AI evaluation", "academic research"],
   authors: [{ name: "พล.ท.ดร.กริช อินทราทิพย์" }],
   icons: {
-    icon: "/favicon.svg",
+    icon: "/favicon.jpg",
   },
 };
 
@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="th">
       <head>
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/favicon.jpg" type="image/jpeg" />
       </head>
       <body className="antialiased">
         <AppProvider>
