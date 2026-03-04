@@ -411,7 +411,6 @@ export function generateHtmlReport(results: EvaluationResults): string {
                 return scoreItem?.score || 0;
             });
             const avg = scores.length > 0 ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
-            const avgPercentage = (avg / criterion.maxScore) * 100;
             return `
                             <tr>
                                 <td>${criterion.id}. ${criterion.name}</td>

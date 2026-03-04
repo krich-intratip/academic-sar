@@ -1,9 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
-import { AppState, AppAction, AppConfig, AIProvider, RubricType } from '@/types';
-
-const STORAGE_KEY = 'academic_sar_config';
+import { AppState, AppAction, AIProvider } from '@/types';
 
 const initialState: AppState = {
     config: {

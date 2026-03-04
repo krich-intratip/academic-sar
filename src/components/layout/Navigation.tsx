@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { APP_VERSION, APP_LAST_UPDATE, APP_NAME } from '@/types/app';
 
 export type TabId = 'home' | 'guide' | 'about';

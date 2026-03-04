@@ -2,7 +2,6 @@
 
 import { useApp } from '@/context/AppContext';
 import { experts } from '@/types/evaluation';
-import { getPriorityColor, getPriorityLabel } from '@/lib/utils';
 
 interface RecommendationWithSource {
     priority: string;

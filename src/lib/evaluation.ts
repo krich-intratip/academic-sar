@@ -3,9 +3,7 @@
 import { RubricType } from '@/types/app';
 import {
     EvaluationSummary,
-    CriteriaAverage,
     ExpertEvaluation,
-    RubricCriteria,
     getCriteriaByRubric
 } from '@/types/evaluation';
 

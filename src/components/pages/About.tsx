@@ -5,6 +5,7 @@ import { APP_VERSION, APP_LAST_UPDATE, APP_NAME } from '@/types/app';
 import { Card, QRCodeModal } from '@/components/ui';
 
 const DEVELOPER_LINK = 'https://portfolio-two-sepia-33.vercel.app/';
+const FACEBOOK_PAGE_LINK = 'https://www.facebook.com/profile.php?id=61560753899059';
 
 type TabId = 'functional' | 'nonfunctional' | 'timeline';
 
@@ -16,6 +17,19 @@ const tabs: { id: TabId; label: string; icon: string }[] = [
 
 // Version history data
 const versionHistory = [
+    {
+        version: 'v3.5.0',
+        date: '4 มีนาคม 2569',
+        type: 'minor',
+        changes: [
+            'เพิ่มลิงค์เพจ Facebook: PK Research ในหน้าเกี่ยวกับโปรแกรม',
+            'อัปเดตโมเดล Gemini เพิ่ม Gemini 2.0 Flash-Lite (เบา รวดเร็ว)',
+            'อัปเดตโมเดล OpenRouter: แทน Devstral (coding) ด้วย Mistral Small 3.1 24B (รองรับไทย)',
+            'เพิ่ม Qwen 3 30B บน OpenRouter (ฟรี รวดเร็ว รองรับไทย)',
+            'อัปเดต Claude Sonnet และ Haiku เป็น 4.5 บน OpenRouter',
+            'ระบุ Thai support ในทุกโมเดลอย่างชัดเจน',
+        ],
+    },
     {
         version: 'v3.4.0',
         date: '2 มีนาคม 2569',
@@ -237,6 +251,27 @@ export default function About() {
                         </a>
                     </p>
                 </div>
+            </div>
+
+            {/* Facebook Page */}
+            <div className="bg-white p-6 rounded-2xl shadow-md text-center">
+                <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center justify-center gap-2">
+                    <span className="text-xl">📘</span> ติดตามเราบน Facebook
+                </h3>
+                <a
+                    href={FACEBOOK_PAGE_LINK}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-3 px-6 py-3 bg-[#1877F2] hover:bg-[#1460C7] text-white font-semibold rounded-xl transition-all duration-200 hover:scale-105 hover:shadow-lg"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.887v2.267h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/>
+                    </svg>
+                    PK Research
+                </a>
+                <p className="text-sm text-gray-500 mt-3">
+                    ติดตามข่าวสาร อัปเดต และเนื้อหาวิจัยใหม่ๆ ได้ที่เพจ Facebook
+                </p>
             </div>
 
             {/* QR Code Modal */}

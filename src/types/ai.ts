@@ -1,5 +1,5 @@
 // AI Provider and Model Types
-// อัพเดทล่าสุด: กุมภาพันธ์ 2569
+// อัพเดทล่าสุด: มีนาคม 2569
 
 export type AIProvider = 'gemini' | 'deepseek' | 'kimi' | 'openrouter';
 
@@ -24,11 +24,13 @@ export const providerConfigs: Record<AIProvider, ProviderConfig> = {
         keyLabel: 'Gemini API Key',
         info: 'รับ API Key ได้ที่ <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-blue-600 hover:underline">Google AI Studio</a> (มี Free Tier!)',
         models: [
-            // Gemini 2.5 Series (แนะนำ - คุ้มค่า)
+            // Gemini 2.5 Series (ล่าสุด - แนะนำ)
             { value: 'gemini-2.5-flash', label: '⭐ Gemini 2.5 Flash (แนะนำ - คุ้มค่ามาก)', isFree: true, pricing: 'ฟรี (Free Tier)' },
             { value: 'gemini-2.5-pro', label: '🧠 Gemini 2.5 Pro (Thinking - ซับซ้อน)', isFree: true, pricing: 'ฟรี (Free Tier)' },
             { value: 'gemini-2.5-flash-lite', label: '💚 Gemini 2.5 Flash-Lite (ประหยัดสุด)', isFree: true, pricing: 'ฟรี (Free Tier)' },
-            { value: 'gemini-2.0-flash', label: '✅ Gemini 2.0 Flash', isFree: true, pricing: 'ฟรี (Free Tier)' }
+            // Gemini 2.0 Series (Stable)
+            { value: 'gemini-2.0-flash', label: '✅ Gemini 2.0 Flash (เสถียร)', isFree: true, pricing: 'ฟรี (Free Tier)' },
+            { value: 'gemini-2.0-flash-lite', label: '🟢 Gemini 2.0 Flash-Lite (เบา รวดเร็ว)', isFree: true, pricing: 'ฟรี (Free Tier)' }
         ],
         endpoint: 'https://generativelanguage.googleapis.com/v1beta/models/'
     },
@@ -59,43 +61,40 @@ export const providerConfigs: Record<AIProvider, ProviderConfig> = {
         info: 'รับ API Key ได้ที่ <a href="https://openrouter.ai/keys" target="_blank" class="text-blue-600 hover:underline">OpenRouter</a><br/>✅ รองรับ 300+ models รวมถึง Claude, DeepSeek, Qwen, Gemini, Typhoon และอื่นๆ',
         models: [
             // === 🆓 โมเดลฟรี (Free Tier) ===
-            // Google Gemini (ฟรี)
-            { value: 'google/gemini-2.5-flash', label: '🆓⭐ Gemini 2.5 Flash (ฟรี แนะนำ)', isFree: true, pricing: 'ฟรี' },
-            { value: 'google/gemini-2.5-pro', label: '🆓🧠 Gemini 2.5 Pro (ฟรี Thinking)', isFree: true, pricing: 'ฟรี' },
+            // Google Gemini (ฟรี - แนะนำสุด)
+            { value: 'google/gemini-2.5-flash', label: '🆓⭐ Gemini 2.5 Flash (ฟรี แนะนำ รองรับไทย)', isFree: true, pricing: 'ฟรี' },
+            { value: 'google/gemini-2.5-pro', label: '🆓🧠 Gemini 2.5 Pro (ฟรี Thinking รองรับไทย)', isFree: true, pricing: 'ฟรี' },
 
             // DeepSeek จีน (ฟรี - รองรับไทย)
-            { value: 'deepseek/deepseek-chat-v3-0324:free', label: '🆓🔵 DeepSeek V3 (ฟรี คุ้มสุด)', isFree: true, pricing: 'ฟรี' },
-            { value: 'deepseek/deepseek-r1:free', label: '🆓🔵 DeepSeek R1 Reasoning (ฟรี)', isFree: true, pricing: 'ฟรี' },
+            { value: 'deepseek/deepseek-chat-v3-0324:free', label: '🆓🔵 DeepSeek V3 (ฟรี คุ้มสุด รองรับไทย)', isFree: true, pricing: 'ฟรี' },
+            { value: 'deepseek/deepseek-r1:free', label: '🆓🔵 DeepSeek R1 Reasoning (ฟรี รองรับไทย)', isFree: true, pricing: 'ฟรี' },
 
             // Qwen จีน (ฟรี - รองรับไทย)
-            { value: 'qwen/qwen3-235b-a22b:free', label: '🆓🟣 Qwen 3 235B (ฟรี ฉลาด)', isFree: true, pricing: 'ฟรี' },
-            { value: 'qwen/qwen-2.5-72b-instruct:free', label: '🆓🟣 Qwen 2.5 72B (ฟรี)', isFree: true, pricing: 'ฟรี' },
+            { value: 'qwen/qwen3-235b-a22b:free', label: '🆓🟣 Qwen 3 235B (ฟรี ฉลาด รองรับไทย)', isFree: true, pricing: 'ฟรี' },
+            { value: 'qwen/qwen3-30b-a3b:free', label: '🆓🟣 Qwen 3 30B (ฟรี เร็ว รองรับไทย)', isFree: true, pricing: 'ฟรี' },
 
             // Meta Llama (ฟรี - รองรับไทย)
             { value: 'meta-llama/llama-3.3-70b-instruct:free', label: '🆓🦙 Llama 3.3 70B (ฟรี รองรับไทย)', isFree: true, pricing: 'ฟรี' },
 
-            // Mistral (ฟรี)
-            { value: 'mistralai/devstral-2512:free', label: '🆓🟠 Devstral 2 Coding (ฟรี)', isFree: true, pricing: 'ฟรี' },
-
-            // NVIDIA (ฟรี)
-            { value: 'nvidia/nemotron-3-nano-30b-a3b:free', label: '🆓🟩 NVIDIA Nemotron 3 (ฟรี)', isFree: true, pricing: 'ฟรี' },
+            // Mistral (ฟรี - รองรับไทย)
+            { value: 'mistralai/mistral-small-3.1-24b-instruct:free', label: '🆓🟠 Mistral Small 3.1 24B (ฟรี รองรับไทย)', isFree: true, pricing: 'ฟรี' },
 
             // === 💰 โมเดลมีค่าใช้จ่าย ===
-            // DeepSeek (ราคาถูกมาก)
-            { value: 'deepseek/deepseek-chat-v3.2', label: '💚🔵 DeepSeek V3.2 (ถูกมาก)', isFree: false, pricing: '$0.25/$0.38 ต่อ 1M' },
+            // DeepSeek (ราคาถูกมาก รองรับไทย)
+            { value: 'deepseek/deepseek-chat-v3-0324', label: '💚🔵 DeepSeek V3 (ถูกมาก รองรับไทย)', isFree: false, pricing: '$0.25/$0.27 ต่อ 1M' },
 
-            // Claude (แพง แต่ฉลาด)
-            { value: 'anthropic/claude-sonnet-4', label: '💰🟤 Claude Sonnet 4 (แพง)', isFree: false, pricing: '$3/$15 ต่อ 1M' },
-            { value: 'anthropic/claude-haiku-4.5', label: '✅🟤 Claude Haiku 4.5 (คุ้มค่า)', isFree: false, pricing: '$0.8/$4 ต่อ 1M' },
+            // Claude (แพง แต่ฉลาด รองรับไทย)
+            { value: 'anthropic/claude-sonnet-4-5', label: '💰🟤 Claude Sonnet 4.5 (แพง รองรับไทย)', isFree: false, pricing: '$3/$15 ต่อ 1M' },
+            { value: 'anthropic/claude-haiku-4-5', label: '✅🟤 Claude Haiku 4.5 (คุ้มค่า รองรับไทย)', isFree: false, pricing: '$0.8/$4 ต่อ 1M' },
 
-            // OpenAI
-            { value: 'openai/gpt-4.1', label: '💰🟢 GPT-4.1 (แพง)', isFree: false, pricing: '$2/$8 ต่อ 1M' },
-            { value: 'openai/gpt-4.1-mini', label: '✅🟢 GPT-4.1 Mini (คุ้มค่า)', isFree: false, pricing: '$0.4/$1.6 ต่อ 1M' },
+            // OpenAI (รองรับไทย)
+            { value: 'openai/gpt-4.1', label: '💰🟢 GPT-4.1 (แพง รองรับไทย)', isFree: false, pricing: '$2/$8 ต่อ 1M' },
+            { value: 'openai/gpt-4.1-mini', label: '✅🟢 GPT-4.1 Mini (คุ้มค่า รองรับไทย)', isFree: false, pricing: '$0.4/$1.6 ต่อ 1M' },
 
             // Moonshot/Kimi จีน (ราคาถูก รองรับไทย)
-            { value: 'moonshotai/kimi-k2', label: '💚🌙 Kimi K2 (ถูก รองรับไทย)', isFree: false, pricing: '$0.3/$0.9 ต่อ 1M' },
+            { value: 'moonshotai/kimi-k2', label: '💚🌙 Kimi K2 (ถูก รองรับไทย)', isFree: false, pricing: '$0.15/$2.50 ต่อ 1M' },
 
-            // === 🇹🇭 โมเดลไทย ===
+            // === 🇹🇭 โมเดลไทย (Thai-first) ===
             { value: 'scb10x/typhoon2-70b-instruct', label: '🇹🇭 Typhoon 2 70B (ไทยโดยเฉพาะ)', isFree: false, pricing: '$0.5/$1.5 ต่อ 1M' },
             { value: 'scb10x/typhoon2-8b-instruct', label: '🇹🇭💚 Typhoon 2 8B (ไทย ถูก)', isFree: false, pricing: '$0.1/$0.3 ต่อ 1M' }
         ],

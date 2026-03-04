@@ -1,7 +1,7 @@
 // Prompt Generation for Expert Evaluation
 
 import { RubricType } from '@/types/app';
-import { Expert, experts, RubricCriteria, proposalCriteria, thesisCriteria, getCriteriaByRubric } from '@/types/evaluation';
+import { experts, RubricCriteria, getCriteriaByRubric } from '@/types/evaluation';
 
 // Get rubric type label in Thai
 function getRubricLabel(rubricType: RubricType): string {
